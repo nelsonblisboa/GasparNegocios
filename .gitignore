@@ -1,0 +1,13 @@
+# Arquivos de credenciais — NUNCA commitar
+.env
+.env.local
+.env.*.local
+
+# Previews temporárias
+_test-*.png
+_test-*.html
+downloads/
+
+# Sistema
+.DS_Store
+Thumbs.db

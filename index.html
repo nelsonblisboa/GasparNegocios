@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Treinamento de vendas - Plataforma interativa de capacitação comercial" />
+  <meta name="theme-color" content="#0B2545" />
+  <title>Treinamento de Produto · Plataforma de Capacitação</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================================================
+       1. CONFIGURAÇÃO DE TEMA (edite as cores da sua marca aqui)
+       =========================================================== */
+    :root {
+      /* === IDENTIDADE GASPAR — Paleta extraída do design === */
+      /* Preto profundo + cobre/dourado + creme/marfim = premium, confiável, acolhedor */
+      --c-primary:        #131313;   /* preto profundo (textos, blocos escuros) */
+      --c-primary-2:      #1F1F1F;   /* variação */
+      --c-primary-soft:   #F1ECE0;   /* fundo suave (creme claro) */
+      --c-accent:         #B88547;   /* cobre/dourado principal */
+      --c-accent-2:       #C78634;   /* cobre mais saturado (ícones) */
+      --c-accent-3:       #8B5A2B;   /* cobre escuro (detalhes) */
+      --c-accent-soft:    #E8D5B7;   /* cobre claro (badges) */
+      --c-success:        #10B981;
+      --c-danger:         #EF4444;
+      --c-warning:        #B88547;
+
+      --c-bg:             #F8F5EE;   /* creme/marfim */
+      --c-bg-card:        #FFFFFF;
+      --c-bg-elev:        #131313;   /* blocos escuros */
+      --c-text:           #131313;
+      --c-text-soft:      #4A4A4A;
+      --c-text-mute:      #8C8276;
+      --c-border:         #E8E2D3;
+
+      /* Tipografia */
+      --ff-sans:  "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --ff-serif: "Playfair Display", "Fraunces", Georgia, serif;
+
+      /* Raio, sombra, animação */
+      --r-sm: 10px;
+      --r-md: 16px;
+      --r-lg: 24px;
+      --r-xl: 32px;
+      --shadow-sm: 0 1px 2px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.06);
+      --shadow-md: 0 8px 24px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.06);
+      --shadow-lg: 0 30px 60px -20px rgba(11,37,69,.25);
+      --ease: cubic-bezier(.2,.7,.2,1);
+    }
+
+    /* ===========================================================
+       2. RESET + BASE
+       =========================================================== */
+    *,*::before,*::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ff-sans);
+      color: var(--c-text);
+      background: var(--c-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img,svg { max-width: 100%; display: block; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    h1,h2,h3,h4 { font-family: var(--ff-serif); font-weight: 700; line-height: 1.15; margin: 0 0 .5em; color: var(--c-primary); letter-spacing: -0.02em; }
+    p { margin: 0 0 1em; color: var(--c-text-soft); }
+    ul { margin: 0; padding: 0; list-style: none; }
+    .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    /* Acessibilidade */
+    :focus-visible { outline: 3px solid var(--c-accent); outline-offset: 3px; border-radius: 6px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation: none !important; transition: none !important; }
+    }
+
+    /* ===========================================================
+       3. PROGRESS BAR (sticky top)
+       =========================================================== */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+      background: linear-gradient(90deg, var(--c-accent-2), var(--c-accent-3));
+      z-index: 100; transition: width .2s var(--ease);
+    }
+
+    /* ===========================================================
+       4. TOPBAR
+       =========================================================== */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(140%) blur(10px);
+      -webkit-backdrop-filter: saturate(140%) blur(10px);
+      background: rgba(255,255,255,.78);
+      border-bottom: 1px solid rgba(15,23,42,.06);
+    }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 10px;
+      overflow: hidden; flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .brand-mark svg { display: block; width: 100%; height: 100%; }
+    .brand-text strong { display: block; font-size: 14px; letter-spacing: -0.01em; color: var(--c-text); }
+    .brand-text span { display: block; font-size: 11px; color: var(--c-text-mute); text-transform: uppercase; letter-spacing: .08em; }
+
+    .topbar-meta { display: flex; align-items: center; gap: 12px; }
+    .progress-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--c-primary-soft); color: var(--c-accent-3);
+      font-size: 12px; font-weight: 600;
+    }
+    .progress-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent-2); }
+    @media (max-width: 600px) { .brand-text span { display: none; } }
+
+    /* ===========================================================
+       5. HERO
+       =========================================================== */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 88px 0 96px;
+      background:
+        radial-gradient(60% 80% at 90% 0%, rgba(245,158,11,.18), transparent 60%),
+        radial-gradient(50% 60% at 0% 30%, rgba(19,49,92,.18), transparent 60%),
+        linear-gradient(180deg, #ffffff, var(--c-bg));
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(15,23,42,.05) 1px, transparent 1px);
+      background-size: 22px 22px; opacity: .4; pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      display: grid; grid-template-columns: 1.2fr .8fr; gap: 60px; align-items: center;
+    }
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--c-primary-soft); color: var(--c-primary);
+      font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .eyebrow .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--c-success); box-shadow: 0 0 0 0 rgba(16,185,129,.6); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,.5); } 70% { box-shadow: 0 0 0 12px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 5.2vw, 3.6rem);
+      margin-bottom: 18px;
+    }
+    .hero h1 em { font-style: normal; color: var(--c-accent); }
+    .hero .lead { font-size: 18px; color: var(--c-text-soft); max-width: 540px; }
+    .hero-quote {
+      margin-top: 24px; padding: 18px 22px;
+      background: rgba(255,255,255,.7);
+      border-left: 3px solid var(--c-accent);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      font-family: var(--ff-serif); font-style: italic; color: var(--c-primary);
+      font-size: 17px; line-height: 1.55;
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .hero-cta .btn { flex: 1 1 auto; justify-content: center; min-width: 200px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 22px; border-radius: 12px;
+      font-weight: 600; font-size: 15px; transition: all .2s var(--ease);
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--c-primary); color: #fff; box-shadow: var(--shadow-md); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .btn-ghost { background: #fff; color: var(--c-primary); border-color: var(--c-border); }
+    .btn-ghost:hover { background: var(--c-primary-soft); border-color: var(--c-primary); }
+    .btn-accent { background: var(--c-accent); color: #1F1300; box-shadow: 0 8px 20px -8px rgba(245,158,11,.6); }
+    .btn-accent:hover { transform: translateY(-1px); }
+
+    /* Hero card (stats flutuantes) */
+    .hero-card {
+      position: relative;
+      background: linear-gradient(160deg, var(--c-primary), var(--c-primary-2));
+      color: #fff; border-radius: var(--r-xl);
+      padding: 28px; box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: ""; position: absolute; right: -40px; top: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,.5), transparent 70%);
+    }
+    .hero-card h3 { color: #fff; font-size: 22px; margin-bottom: 6px; padding-right: 130px; }
+    @media (max-width: 600px) {
+      .hero-card h3 { padding-right: 0; margin-top: 36px; }
+      .hero-card { padding: 22px; }
+      .floating-badges.top { top: 16px; right: 16px; flex-wrap: wrap; max-width: calc(100% - 32px); justify-content: flex-end; }
+      .fbadge { font-size: 10px; padding: 5px 10px; }
+    }
+    .hero-card p { color: rgba(255,255,255,.78); font-size: 14px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+    .hero-stat { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-md); padding: 14px; text-align: center; backdrop-filter: blur(4px); }
+    .hero-stat b { display: block; font-family: var(--ff-serif); font-size: 28px; color: var(--c-accent-2); }
+    .hero-stat span { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.7); }
+
+    .floating-badges { position: absolute; display: flex; gap: 8px; }
+    .floating-badges.top { top: 24px; right: 24px; flex-direction: row; }
+    .fbadge {
+      background: #fff; border-radius: 999px; padding: 7px 13px;
+      font-size: 11px; font-weight: 600; color: var(--c-primary);
+      box-shadow: var(--shadow-md); display: inline-flex; align-items: center; gap: 6px;
+    }
+    .fbadge .ic { width: 18px; height: 18px; border-radius: 50%; background: var(--c-accent); display: grid; place-items: center; color: #fff; font-size: 10px; }
+    @media (max-width: 1100px) { .floating-badges { display: none; } }
+
+    /* ===========================================================
+       6. SECTIONS (módulos)
+       =========================================================== */
+    section.module {
+      padding: 90px 0;
+      position: relative;
+    }
+    section.module:nth-of-type(even) { background: #fff; }
+    .module-head { max-width: 720px; margin: 0 auto 48px; text-align: center; }
+    .module-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--ff-sans); font-weight: 600; font-size: 12px;
+      color: var(--c-primary); letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .module-tag .num { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--c-primary); color: #fff; font-family: var(--ff-serif); font-size: 13px; }
+    .module-head h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 10px; }
+    .module-head p { font-size: 17px; }
+
+    /* Reveal on scroll — só esconde se o JS marcou a página como "js", garantindo visibilidade sem JS */
+    html.js .reveal { opacity: 0; transform: translateY(20px); }
+    .reveal { transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.in { opacity: 1 !important; transform: none !important; }
+    .reveal[data-delay="100"] { transition-delay: .1s; }
+    .reveal[data-delay="200"] { transition-delay: .2s; }
+    .reveal[data-delay="300"] { transition-delay: .3s; }
+
+    /* ===========================================================
+       7. MÓDULOS ESPECÍFICOS
+       =========================================================== */
+    /* 7.1 Abertura emocional */
+    .emotional {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: stretch;
+    }
+    @media (max-width: 900px) { .emotional { grid-template-columns: 1fr; } }
+    .pain-card {
+      background: linear-gradient(160deg, #fff, var(--c-primary-soft));
+      border: 1px solid var(--c-border); border-radius: var(--r-lg);
+      padding: 32px; box-shadow: var(--shadow-sm);
+    }
+    .pain-card h3 { font-size: 24px; margin-bottom: 16px; }
+    .pain-list { display: grid; gap: 16px; }
+    .pain-item {
+      display: grid; grid-template-columns: 44px 1fr; gap: 14px;
+      padding: 16px; background: #fff; border-radius: var(--r-md);
+      border: 1px solid var(--c-border);
+    }
+    .pain-item .ic {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--c-primary); color: #fff;
+      display: grid; place-items: center; font-weight: 700;
+    }
+    .pain-item b { display: block; color: var(--c-text); margin-bottom: 2px; }
+    .pain-item p { margin: 0; font-size: 14px; }
+
+    .dica {
+      background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+      border: 1px solid #FDE68A; border-radius: var(--r-lg);
+      padding: 24px; display: grid; gap: 8px;
+    }
+    .dica .lbl { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: #92400E; text-transform: uppercase; }
+    .dica h4 { color: #78350F; font-size: 22px; margin: 4px 0 6px; }
+    .dica p { color: #78350F; margin: 0; }
+
+    /* 7.2 Coberturas */
+    .coverage-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .cov-card {
+      position: relative; overflow: hidden;
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-lg);
+      padding: 26px; transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .cov-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .cov-card .ic {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: grid; place-items: center; margin-bottom: 16px; font-size: 22px;
+      background: var(--c-primary-soft); color: var(--c-primary);
+    }
+    .cov-card.accent .ic { background: #FEF3C7; color: #92400E; }
+    .cov-card h3 { font-size: 19px; margin-bottom: 4px; }
+    .cov-card .price { font-family: var(--ff-serif); font-size: 30px; color: var(--c-accent); font-weight: 700; margin: 8px 0 6px; }
+    .cov-card .price small { font-size: 12px; color: var(--c-text-mute); font-weight: 500; }
+    .cov-card p { font-size: 14px; }
+    .cov-card ul { margin-top: 10px; display: grid; gap: 6px; }
+    .cov-card li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--c-text-soft); }
+    .cov-card li::before { content: "✓"; color: var(--c-success); font-weight: 800; flex-shrink: 0; }
+
+    /* 7.3 Benefícios em vida */
+    .life-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .life-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 22px; display: grid; gap: 8px; transition: all .2s var(--ease);
+    }
+    .life-card:hover { border-color: var(--c-primary); background: var(--c-primary-soft); }
+    .life-card .em-ic { font-size: 28px; }
+    .life-card h4 { font-family: var(--ff-sans); font-weight: 700; font-size: 15px; color: var(--c-text); margin: 0; }
+    .life-card p { margin: 0; font-size: 13px; }
+
+    /* 7.4 Gatilhos de venda */
+    .triggers {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .trigger {
+      display: grid; grid-template-columns: 44px 1fr; gap: 14px;
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 18px; transition: all .2s var(--ease);
+    }
+    .trigger:hover { transform: translateX(4px); border-color: var(--c-accent); }
+    .trigger .num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+      color: #1F1300; display: grid; place-items: center; font-weight: 800; font-family: var(--ff-serif);
+    }
+    .trigger h4 { font-family: var(--ff-sans); font-size: 14px; color: var(--c-text); margin: 0 0 4px; }
+    .trigger p { margin: 0; font-size: 13px; font-style: italic; color: var(--c-text-soft); }
+
+    /* 7.5 Script */
+    .script-box {
+      background: linear-gradient(160deg, var(--c-primary), var(--c-primary-2));
+      color: #fff; border-radius: var(--r-xl); padding: 40px;
+      position: relative; overflow: hidden;
+    }
+    .script-box::before {
+      content: """; position: absolute; right: 30px; top: -20px;
+      font-family: var(--ff-serif); font-size: 220px; line-height: 1;
+      color: rgba(255,255,255,.06);
+    }
+    .script-box .lbl { color: var(--c-accent-2); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .script-box h3 { color: #fff; font-size: 26px; margin: 8px 0 18px; }
+    .script-list { display: grid; gap: 12px; max-width: 720px; }
+    .script-item { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; padding: 14px 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-md); }
+    .script-item .n { width: 28px; height: 28px; border-radius: 50%; background: var(--c-accent); color: #1F1300; display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+    .script-item p { margin: 0; color: rgba(255,255,255,.92); font-size: 15px; }
+    .script-cta { margin-top: 24px; font-family: var(--ff-serif); font-size: 24px; color: var(--c-accent-2); font-weight: 700; }
+
+    /* 7.6 Objeção interativa */
+    .objection {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    @media (max-width: 900px) { .objection { grid-template-columns: 1fr; } }
+    .obj-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-lg);
+      padding: 28px;
+    }
+    .obj-card.client { background: linear-gradient(160deg, #FEF2F2, #FEE2E2); border-color: #FCA5A5; }
+    .obj-card.trainer { background: linear-gradient(160deg, #ECFDF5, #D1FAE5); border-color: #6EE7B7; }
+    .obj-card .lbl { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .obj-card.client .lbl { color: #B91C1C; }
+    .obj-card.trainer .lbl { color: #047857; }
+    .obj-card p { font-size: 16px; line-height: 1.6; }
+    .obj-card.client p { color: #7F1D1D; font-style: italic; font-family: var(--ff-serif); font-size: 20px; }
+    .obj-card.trainer p { color: #064E3B; }
+    .reveal-btn {
+      margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; background: var(--c-primary); color: #fff;
+      border-radius: 10px; font-weight: 600; font-size: 14px;
+    }
+    .reveal-btn:hover { background: var(--c-primary-2); }
+
+    /* 7.7 Glossário (acordeão) */
+    .glossary { max-width: 900px; margin: 0 auto; display: grid; gap: 8px; }
+    details.term {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 0 22px; transition: all .2s var(--ease);
+    }
+    details.term[open] { border-color: var(--c-primary); box-shadow: var(--shadow-sm); }
+    details.term summary {
+      list-style: none; cursor: pointer; padding: 18px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 600; color: var(--c-text);
+    }
+    details.term summary::-webkit-details-marker { display: none; }
+    details.term summary::after {
+      content: "+"; font-size: 22px; color: var(--c-primary); transition: transform .2s var(--ease);
+    }
+    details.term[open] summary::after { content: "−"; }
+    details.term .body { padding: 0 0 18px; color: var(--c-text-soft); font-size: 15px; }
+
+    /* 7.8 Exercícios (quiz) */
+    .quiz { max-width: 800px; margin: 0 auto; display: grid; gap: 18px; }
+    .q-card { background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md); padding: 22px; }
+    .q-card .q-num { font-size: 11px; font-weight: 800; color: var(--c-primary); letter-spacing: .12em; text-transform: uppercase; }
+    .q-card .q-text { font-size: 16px; color: var(--c-text); margin: 6px 0 14px; font-weight: 500; }
+    .q-card input[type="text"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--c-border); border-radius: 10px;
+      font: inherit; background: var(--c-bg); transition: border-color .2s var(--ease);
+    }
+    .q-card input[type="text"]:focus { outline: none; border-color: var(--c-primary); background: #fff; }
+    .q-card .check-btn { margin-top: 12px; padding: 10px 18px; background: var(--c-primary); color: #fff; border-radius: 10px; font-weight: 600; }
+    .q-card .feedback { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; display: none; }
+    .q-card.correct .feedback.ok { display: block; background: #ECFDF5; color: #047857; border: 1px solid #6EE7B7; }
+    .q-card.wrong .feedback.err { display: block; background: #FEF2F2; color: #B91C1C; border: 1px solid #FCA5A5; }
+
+    /* 7.8.1 Especialidades (grid de tags coloridas) */
+    .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .spec-card {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 16px 18px; transition: all .2s var(--ease);
+    }
+    .spec-card:hover { border-color: var(--c-primary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .spec-card .ic {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--c-primary-soft); color: var(--c-primary);
+      display: grid; place-items: center; font-size: 20px; flex-shrink: 0;
+    }
+    .spec-card h4 { font-family: var(--ff-sans); font-size: 14px; color: var(--c-text); margin: 0; font-weight: 600; }
+    .spec-card .badge { display: inline-block; margin-top: 2px; font-size: 11px; color: var(--c-text-mute); }
+
+    /* 7.8.2 Journey / Timeline (passo a passo) */
+    .journey {
+      position: relative; display: grid; gap: 20px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .journey::before {
+      content: ""; position: absolute; left: 30px; top: 30px; bottom: 30px;
+      width: 2px; background: linear-gradient(180deg, var(--c-primary), var(--c-accent));
+      opacity: .25;
+    }
+    @media (min-width: 720px) { .journey { grid-template-columns: 1fr 1fr; gap: 24px 40px; } .journey::before { left: 50%; transform: translateX(-50%); } }
+    .step {
+      position: relative; display: grid; grid-template-columns: 60px 1fr; gap: 16px;
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 20px; transition: all .2s var(--ease);
+    }
+    .step:hover { border-color: var(--c-primary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .step .n {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-primary), var(--c-primary-2));
+      color: #fff; display: grid; place-items: center;
+      font-family: var(--ff-serif); font-size: 24px; font-weight: 800;
+      box-shadow: 0 6px 16px rgba(11,37,69,.2); flex-shrink: 0;
+    }
+    .step h4 { font-family: var(--ff-sans); font-size: 16px; color: var(--c-text); margin: 0 0 4px; font-weight: 700; }
+    .step p { margin: 0; font-size: 14px; color: var(--c-text-soft); }
+    @media (min-width: 720px) {
+      .step:nth-child(even) { transform: translateY(40px); }
+      .step:nth-child(even):hover { transform: translateY(38px); }
+    }
+
+    /* 7.8.3 Benefits grid (3 colunas) */
+    .benefit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .benefit {
+      display: grid; grid-template-columns: 44px 1fr; gap: 12px;
+      background: linear-gradient(160deg, #fff, var(--c-primary-soft));
+      border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 18px; transition: all .2s var(--ease);
+    }
+    .benefit:hover { transform: translateX(4px); border-color: var(--c-primary); }
+    .benefit .ic {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--c-primary); color: #fff;
+      display: grid; place-items: center; font-size: 18px; font-weight: 700;
+    }
+    .benefit h4 { font-family: var(--ff-sans); font-size: 14px; color: var(--c-text); margin: 0 0 4px; font-weight: 700; }
+    .benefit p { margin: 0; font-size: 13px; color: var(--c-text-soft); }
+
+    /* 7.8.4 Profile cards (para quem é) */
+    .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .profile-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 22px; position: relative; overflow: hidden; transition: all .2s var(--ease);
+    }
+    .profile-card::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+      background: linear-gradient(180deg, var(--c-primary), var(--c-accent));
+    }
+    .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .profile-card .lbl { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--c-primary); text-transform: uppercase; }
+    .profile-card p { margin: 8px 0 0; font-size: 14px; color: var(--c-text-soft); }
+    .profile-card p b { color: var(--c-text); }
+
+    /* 7.8.5 Stats banner (destaque numérico) */
+    .stats-banner {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0; background: linear-gradient(160deg, var(--c-primary), var(--c-primary-2));
+      border-radius: var(--r-lg); padding: 0; overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .stat-cell {
+      padding: 30px 24px; text-align: center; color: #fff;
+      border-right: 1px solid rgba(255,255,255,.1);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .stat-cell:last-child { border-right: 0; }
+    .stat-cell b {
+      display: block; font-family: var(--ff-serif); font-size: 48px; line-height: 1;
+      color: var(--c-accent-2); font-weight: 800;
+    }
+    .stat-cell span {
+      display: block; font-size: 12px; margin-top: 8px;
+      text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.7);
+    }
+    @media (max-width: 600px) {
+      .stat-cell { border-right: 0 !important; }
+    }
+
+    /* 7.8.6 FAQ acordeão (variante mais clean do glossary) */
+    .faq { max-width: 800px; margin: 0 auto; display: grid; gap: 10px; }
+    details.faq-item {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 0 22px; transition: all .2s var(--ease);
+    }
+    details.faq-item[open] { border-color: var(--c-primary); box-shadow: var(--shadow-sm); }
+    details.faq-item summary {
+      list-style: none; cursor: pointer; padding: 18px 0;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      font-weight: 600; color: var(--c-text); font-size: 16px;
+    }
+     details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after {
+      content: "+"; font-size: 22px; color: var(--c-primary); transition: transform .2s var(--ease); flex-shrink: 0;
+    }
+    details.faq-item[open] summary::after { content: "−"; }
+    details.faq-item .body { padding: 0 0 18px; color: var(--c-text-soft); font-size: 15px; line-height: 1.6; }
+
+    /* 7.9 Materiais de apoio */
+    .materials {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .mat-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 22px; display: grid; gap: 10px; transition: all .2s var(--ease);
+    }
+    .mat-card:hover { border-color: var(--c-primary); transform: translateY(-2px); }
+    .mat-card .ic { font-size: 24px; }
+    .mat-card h4 { font-family: var(--ff-sans); font-size: 15px; color: var(--c-text); margin: 0; }
+    .mat-card p { margin: 0; font-size: 13px; }
+    .phone-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 10px; margin-top: 6px; }
+    .phone-row .num { font-family: var(--ff-serif); font-weight: 700; color: var(--c-primary); font-size: 16px; flex: 1; }
+    .phone-row button { padding: 6px 10px; background: var(--c-primary); color: #fff; border-radius: 8px; font-size: 12px; font-weight: 600; }
+    .phone-row button:hover { background: var(--c-primary-2); }
+
+    /* ===========================================================
+       7.10 HERO BANNER — Imagem fullwidth oficial
+       =========================================================== */
+    .hero-banner {
+      position: relative; background: var(--c-bg);
+      padding: 0 0 60px;
+    }
+    .hero-banner-img {
+      position: relative; width: 100%; line-height: 0;
+      overflow: hidden;
+    }
+    .hero-banner-img::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(248,245,238,0) 0%, rgba(248,245,238,.0) 70%, var(--c-bg) 100%);
+      z-index: 1; pointer-events: none;
+    }
+    .hero-banner-img img {
+      display: block; width: 100%; height: auto; max-height: 640px; object-fit: cover;
+      object-position: center 30%;
+    }
+    .hero-banner-cta {
+      text-align: center; padding-top: 48px;
+    }
+    .hero-banner-cta h1 {
+      font-family: var(--ff-serif); font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--c-primary); line-height: 1.1; letter-spacing: -0.02em;
+      margin: 0 0 18px; font-weight: 700; max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+    .hero-banner-cta h1 em { font-style: italic; color: var(--c-accent-2); }
+    .hero-banner-cta .lead { font-size: 17px; color: var(--c-text-soft); max-width: 640px; margin: 0 auto 24px; line-height: 1.6; }
+    .hero-banner-cta .hero-g-cta { justify-content: center; }
+    @media (max-width: 600px) {
+      .hero-banner-cta { padding-top: 32px; }
+      .hero-banner-img img { max-height: 360px; object-position: center 40%; }
+    }
+
+    /* ===========================================================
+       7.11 HERO — Estilo GASPAR (split com foto família) — LEGADO
+       =========================================================== */
+    .hero-g {
+      position: relative; overflow: hidden;
+      background: var(--c-bg);
+      padding: 32px 0 80px;
+    }
+    .hero-g::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(60% 50% at 90% 0%, rgba(184,133,71,.18), transparent 60%),
+        radial-gradient(40% 60% at 0% 50%, rgba(184,133,71,.08), transparent 70%);
+    }
+    .hero-g::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 80px;
+      background: linear-gradient(180deg, transparent, var(--c-bg-elev) 90%);
+      opacity: .04; pointer-events: none;
+    }
+    .hero-g-grid {
+      position: relative; display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    @media (max-width: 900px) { .hero-g-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* Logo grande no hero */
+    .brand-big { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .brand-big-logo { width: 90px; height: 90px; flex-shrink: 0; }
+    .brand-big-text { display: flex; flex-direction: column; }
+    .brand-big-text .name {
+      font-family: var(--ff-serif); font-weight: 900; font-size: 44px;
+      color: var(--c-primary); line-height: 1; letter-spacing: -0.02em;
+    }
+    .brand-big-text .sub {
+      font-size: 13px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--c-accent); font-weight: 600; margin-top: 4px;
+    }
+
+    /* Badges duplos: Funeral + Telemedicina */
+    .duo-badges { display: flex; flex-direction: column; gap: 12px; margin: 24px 0 28px; max-width: 360px; }
+    .duo-badge {
+      display: flex; align-items: center; gap: 14px; padding: 14px 22px;
+      border-radius: 999px; font-weight: 700; font-size: 18px;
+      box-shadow: var(--shadow-md);
+    }
+    .duo-badge.funeral { background: var(--c-primary); color: #fff; }
+    .duo-badge.telemed { background: #fff; color: var(--c-accent-2); border: 2px solid var(--c-accent-2); }
+    .duo-badge .ic { font-size: 22px; }
+
+    /* Tagline com linhas decorativas */
+    .tagline {
+      display: flex; align-items: center; gap: 16px; margin: 28px 0 18px;
+      color: var(--c-text-soft); font-size: 15px; letter-spacing: .08em;
+    }
+    .tagline::before, .tagline::after {
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--c-accent), transparent);
+    }
+    .tagline b { color: var(--c-accent-3); font-weight: 700; text-transform: uppercase; }
+
+    /* Headline serifada */
+    .hero-g h1 {
+      font-family: var(--ff-serif); font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+      color: var(--c-primary); line-height: 1.1; letter-spacing: -0.02em;
+      margin: 0 0 18px; font-weight: 700;
+    }
+    .hero-g h1 em { font-style: italic; color: var(--c-accent-2); }
+    .hero-g .lead { font-size: 17px; color: var(--c-text-soft); max-width: 540px; line-height: 1.6; }
+    .hero-g .lead b { color: var(--c-accent-3); font-weight: 700; }
+
+    .hero-g-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 24px; border-radius: 12px; font-weight: 700; font-size: 15px;
+      background: linear-gradient(135deg, var(--c-accent-2), var(--c-accent-3));
+      color: #fff; box-shadow: 0 8px 20px -8px rgba(184,133,71,.5);
+      transition: all .2s var(--ease);
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -8px rgba(184,133,71,.7); }
+    .btn-outline-gold {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 24px; border-radius: 12px; font-weight: 700; font-size: 15px;
+      background: transparent; color: var(--c-primary);
+      border: 2px solid var(--c-primary); transition: all .2s var(--ease);
+    }
+    .btn-outline-gold:hover { background: var(--c-primary); color: #fff; }
+
+    /* Foto família (placeholder sofisticado) */
+    .family-photo {
+      position: relative; aspect-ratio: 4/5; border-radius: var(--r-lg);
+      overflow: hidden; box-shadow: var(--shadow-lg);
+      background:
+        linear-gradient(135deg, rgba(184,133,71,.4), rgba(199,134,52,.6)),
+        radial-gradient(60% 80% at 50% 40%, rgba(255,255,255,.3), transparent 60%),
+        linear-gradient(180deg, #4A3A2A, #2A1F14);
+    }
+    .family-photo::before {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background-image:
+        radial-gradient(circle at 30% 35%, rgba(255,255,255,.2) 0, transparent 25%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,.15) 0, transparent 30%);
+    }
+    .family-photo .label {
+      position: absolute; bottom: 24px; left: 24px; right: 24px;
+      color: #fff; text-align: center; z-index: 2;
+      font-family: var(--ff-serif); font-style: italic; font-size: 20px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+    .family-photo .heart {
+      position: absolute; top: 24px; right: 24px; z-index: 2;
+      width: 60px; height: 60px; color: var(--c-accent-2);
+      animation: heart-beat 1.6s ease-in-out infinite;
+    }
+    @keyframes heart-beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    /* ===========================================================
+       7.11 SPLIT LAYOUT — Infográfico (benefícios + card especialidades)
+       =========================================================== */
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
+    }
+    @media (max-width: 1000px) { .split { grid-template-columns: 1fr; } }
+
+    .benefits-list { display: grid; gap: 14px; }
+    .benefit-item {
+      display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center;
+      padding: 16px 18px; background: #fff; border-radius: var(--r-md);
+      border: 1px solid var(--c-border); transition: all .2s var(--ease);
+    }
+    .benefit-item:hover { transform: translateX(4px); border-color: var(--c-accent); box-shadow: var(--shadow-sm); }
+    .benefit-item .ic {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--c-primary); color: var(--c-accent-2);
+      display: grid; place-items: center; font-size: 22px;
+      border: 2px solid var(--c-accent-2);
+    }
+    .benefit-item .text { font-size: 14px; color: var(--c-text-soft); line-height: 1.4; }
+    .benefit-item .text b { display: block; color: var(--c-primary); font-size: 15px; text-transform: uppercase; letter-spacing: .02em; margin-bottom: 2px; }
+    .benefit-item .text .v { color: var(--c-accent-3); font-weight: 800; font-size: 16px; }
+
+    /* Card escuro com 12 especialidades (clonado do design) */
+    .dark-card {
+      background: linear-gradient(160deg, #1A1A1A, #0A0A0A);
+      color: #fff; border-radius: var(--r-xl); padding: 32px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+    }
+    .dark-card::before {
+      content: ""; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(184,133,71,.3), transparent 70%);
+      pointer-events: none;
+    }
+    .dark-card .shield {
+      position: absolute; top: 24px; right: 24px;
+      width: 90px; height: 100px; color: var(--c-accent-2);
+      opacity: .15;
+    }
+    .dark-card .peace {
+      text-align: center; font-family: var(--ff-serif); font-size: 16px;
+      color: var(--c-accent-2); text-transform: uppercase; letter-spacing: .12em;
+      margin-bottom: 20px; font-weight: 700;
+    }
+    .dark-card .telemed-title {
+      text-align: center; margin-bottom: 24px;
+    }
+    .dark-card .telemed-title b {
+      display: block; font-family: var(--ff-serif); font-size: 28px; color: #fff;
+    }
+    .dark-card .telemed-title b .h { color: var(--c-accent-2); }
+    .dark-card .telemed-title .sub { color: rgba(255,255,255,.7); font-size: 14px; margin-top: 4px; }
+
+    .specs-grid-dark {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .spec-item-dark {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px; padding: 10px 16px;
+      transition: all .2s var(--ease);
+    }
+    .spec-item-dark:hover { background: rgba(184,133,71,.15); border-color: var(--c-accent-2); transform: translateX(2px); }
+    .spec-item-dark .ic {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(184,133,71,.15); color: var(--c-accent-2);
+      display: grid; place-items: center; font-size: 16px; flex-shrink: 0;
+    }
+    .spec-item-dark .name { font-size: 14px; color: #fff; font-weight: 500; }
+
+    .highlight-bar {
+      margin-top: 20px; padding: 16px; text-align: center;
+      background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+      color: #fff; border-radius: 999px; font-weight: 700; font-size: 14px;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+
+    .quick-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px;
+    }
+    .quick {
+      text-align: center; padding: 14px 8px;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--r-md);
+    }
+    .quick .ic { color: var(--c-accent-2); font-size: 22px; margin-bottom: 6px; }
+    .quick .tx { font-size: 11px; color: rgba(255,255,255,.7); line-height: 1.3; }
+    .quick .tx b { color: #fff; font-size: 12px; }
+
+    .footnote { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 16px; font-style: italic; text-align: center; }
+
+    /* ===========================================================
+       7.12 Faixa Porto Seguro + Brand strip
+       =========================================================== */
+    .portoseg-strip {
+      background: var(--c-primary); color: #fff;
+      padding: 40px 0; position: relative; overflow: hidden;
+      border-top: 3px solid var(--c-accent);
+      border-bottom: 3px solid var(--c-accent);
+    }
+    .portoseg-strip::before {
+      content: ""; position: absolute; inset: 0; opacity: .15;
+      background-image: radial-gradient(rgba(255,255,255,.4) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+    .portoseg-strip-inner {
+      position: relative; display: flex; align-items: center; justify-content: center; gap: 32px;
+      flex-wrap: wrap;
+    }
+    .portoseg-strip .lbl {
+      font-size: 12px; color: var(--c-accent-2); letter-spacing: .25em;
+      text-transform: uppercase; font-weight: 700;
+    }
+    .portoseg-strip .ps-logo {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .portoseg-strip .ps-logo .ps-mark {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, #00A5E0, #0066B3);
+      border-radius: 12px; display: grid; place-items: center;
+      color: #fff; font-weight: 900; font-size: 14px; letter-spacing: .04em;
+    }
+    .portoseg-strip .ps-logo .ps-text { font-weight: 800; font-size: 28px; color: #fff; letter-spacing: -0.01em; }
+    .portoseg-strip .ps-logo .ps-text small { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,.7); letter-spacing: .15em; }
+
+    /* ===========================================================
+       7.13 Values Grid (4 cards de fechamento)
+       =========================================================== */
+    .values-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    }
+    @media (max-width: 900px) { .values-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .values-grid { grid-template-columns: 1fr; } }
+    .value-card {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      padding: 24px 20px; display: grid; gap: 12px;
+      transition: all .2s var(--ease);
+      border-left: 4px solid var(--c-accent-2);
+    }
+    .value-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .value-card .ic { color: var(--c-accent-2); font-size: 28px; }
+    .value-card h4 { font-family: var(--ff-sans); font-size: 14px; color: var(--c-primary); margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .value-card p { margin: 0; font-size: 13px; color: var(--c-text-soft); line-height: 1.5; }
+
+    /* ===========================================================
+       7.14 Section divider decorativo (linha com diamante)
+       =========================================================== */
+    .divider {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin: 20px 0 12px;
+    }
+    .divider::before, .divider::after {
+      content: ""; flex: 0 0 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--c-accent));
+    }
+    .divider::after { background: linear-gradient(90deg, var(--c-accent), transparent); }
+    .divider .gem { color: var(--c-accent-2); font-size: 12px; }
+
+    /* ===========================================================
+       7.15 Decorative wave SVG (curva dourada no fundo)
+       =========================================================== */
+    .wave-divider {
+      display: block; width: 100%; height: 60px; color: var(--c-accent-2);
+      opacity: .3;
+    }
+
+    /* ===========================================================
+       8. FOOTER
+       =========================================================== */
+    footer.site-footer {
+      background: var(--c-bg-elev); color: rgba(255,255,255,.78);
+      padding: 60px 0 32px; margin-top: 60px;
+    }
+    footer .grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+    @media (max-width: 800px) { footer .grid { grid-template-columns: 1fr; } }
+    footer h4 { color: #fff; font-family: var(--ff-sans); font-size: 14px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; }
+    footer a { color: rgba(255,255,255,.78); display: block; padding: 4px 0; transition: color .2s; }
+    footer a:hover { color: var(--c-accent-2); }
+    footer p { color: rgba(255,255,255,.6); font-size: 14px; }
+    .footer-bottom {
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1);
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+      font-size: 12px; color: rgba(255,255,255,.5);
+    }
+    .footer-bottom .warn {
+      background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.3);
+      padding: 12px 14px; border-radius: 10px; color: #FCD34D; font-size: 13px; max-width: 560px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+      background: var(--c-primary); color: #fff; padding: 12px 18px; border-radius: 999px;
+      font-size: 14px; font-weight: 600; opacity: 0; transition: all .25s var(--ease);
+      z-index: 200; box-shadow: var(--shadow-lg);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ===========================================================
+       7.16 FLOATING NAV — Setas para navegar entre sessões
+       =========================================================== */
+    .floating-nav {
+      position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 10px; z-index: 90;
+    }
+    .fnav-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--c-bg-card); color: var(--c-primary);
+      border: 1.5px solid var(--c-border);
+      display: grid; place-items: center;
+      box-shadow: var(--shadow-md);
+      transition: all .2s var(--ease);
+      cursor: pointer;
+    }
+    .fnav-btn:hover:not(:disabled) {
+      background: var(--c-primary); color: #fff;
+      border-color: var(--c-primary); transform: scale(1.05);
+    }
+    .fnav-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .fnav-btn svg { width: 20px; height: 20px; }
+
+    .fnav-label {
+      position: fixed; right: 76px; top: 50%; transform: translateY(-50%);
+      background: var(--c-primary); color: #fff;
+      padding: 8px 14px; border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+      box-shadow: var(--shadow-md);
+      opacity: 0; pointer-events: none; transform: translate(8px, -50%);
+      transition: all .25s var(--ease);
+      z-index: 90; white-space: nowrap;
+    }
+    .fnav-label.show { opacity: 1; transform: translate(0, -50%); }
+
+    /* Indicador "Módulo X de Y" no canto superior direito */
+    .section-pill {
+      position: fixed; top: 80px; right: 18px; z-index: 80;
+      background: var(--c-primary); color: #fff;
+      padding: 6px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      box-shadow: var(--shadow-md);
+      transition: all .2s var(--ease);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .section-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent-2); }
+
+    @media (max-width: 700px) {
+      .floating-nav { right: 12px; gap: 8px; }
+      .fnav-btn { width: 42px; height: 42px; }
+      .fnav-btn svg { width: 18px; height: 18px; }
+      .fnav-label { display: none; }
+      .section-pill { top: 72px; right: 12px; }
+    }
+    @media (max-width: 380px) {
+      .floating-nav { right: 8px; }
+    }
+
+    /* ===========================================================
+       7.17 COMPACTAÇÃO MOBILE — seções mais densas em telas pequenas
+       =========================================================== */
+    @media (max-width: 900px) {
+      section.module { padding: 56px 0; }
+      .module-head { margin-bottom: 32px; }
+      .module-head h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
+      .hero-banner-cta { padding-top: 32px; }
+    }
+    @media (max-width: 600px) {
+      section.module { padding: 40px 0; }
+      .container { padding: 0 16px; }
+      .module-head h2 { font-size: 1.6rem; }
+      .module-head p  { font-size: 15px; }
+      .module-tag { font-size: 11px; }
+      .module-tag .num { width: 24px; height: 24px; font-size: 12px; }
+
+      /* Reduzir gap em grids */
+      .spec-grid, .benefit-grid, .profile-grid, .materials { gap: 10px; }
+      .coverage-grid, .life-grid, .triggers { gap: 10px; }
+      .cov-card, .life-card, .mat-card, .spec-card, .benefit, .profile-card { padding: 16px; }
+      .cov-card h3, .life-card h4, .mat-card h4, .spec-card h4 { font-size: 14px; }
+      .cov-card .price { font-size: 24px; }
+      .pain-item, .trigger, .script-item { padding: 14px; }
+
+      /* Tipografia mais compacta */
+      h1 { line-height: 1.1; }
+      p { font-size: 14px; }
+
+      /* Stats banner em coluna em vez de grid */
+      .stats-banner { grid-template-columns: 1fr 1fr; }
+      .stat-cell { padding: 20px 12px; }
+      .stat-cell b { font-size: 36px; }
+
+      /* Split em mobile vira 1 coluna */
+      .split { grid-template-columns: 1fr; gap: 24px; }
+
+      /* Dark card em mobile */
+      .dark-card { padding: 22px; }
+      .dark-card .telemed-title b { font-size: 22px; }
+      .specs-grid-dark { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: 1fr; }
+
+      /* Hero banner mais compacto */
+      .hero-banner { padding-bottom: 40px; }
+      .hero-banner-cta h1 { font-size: 1.7rem; }
+      .hero-banner-cta .lead { font-size: 15px; }
+
+      /* CTAs fullwidth em mobile */
+      .hero-g-cta .btn-gold, .hero-g-cta .btn-outline-gold { flex: 1 1 100%; justify-content: center; }
+    }
+    @media (max-width: 380px) {
+      .stat-cell b { font-size: 28px; }
+      .hero-banner-cta h1 { font-size: 1.4rem; }
+    }
+
+    /* ===========================================================
+       8. MODO EDIÇÃO — Editor inline com lápis ✏️
+       =========================================================== */
+    .edit-toggle {
+      background: var(--c-accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font: 600 12px/1 'Montserrat', sans-serif;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: var(--shadow-sm);
+      transition: all .2s var(--ease);
+    }
+    .edit-toggle:hover { background: var(--c-accent-3); transform: translateY(-1px); }
+    .edit-toggle.active { background: var(--c-primary); }
+
+    .edit-toolbar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--c-primary); color: #fff;
+      padding: 10px 14px; border-radius: 999px;
+      display: flex; gap: 8px; align-items: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+      z-index: 200; opacity: 0; pointer-events: none;
+      transition: all .3s var(--ease);
+      font: 600 12px/1 'Montserrat', sans-serif;
+      max-width: calc(100vw - 32px); flex-wrap: wrap; justify-content: center;
+    }
+    .edit-toolbar.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .edit-toolbar .label { padding: 0 6px; color: var(--c-accent); letter-spacing: .08em; font-size: 11px; }
+    .edit-toolbar button {
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.25);
+      padding: 7px 12px; border-radius: 999px;
+      font: 600 12px/1 'Montserrat', sans-serif;
+      cursor: pointer; transition: all .2s;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .edit-toolbar button:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.45); }
+    .edit-toolbar button.primary { background: var(--c-accent); border-color: var(--c-accent); }
+    .edit-toolbar button.primary:hover { background: var(--c-accent-2); }
+    .edit-toolbar .divider { width: 1px; height: 22px; background: rgba(255,255,255,.2); margin: 0 4px; }
+
+    /* Estilo dos campos editáveis (no modo edição) */
+    body.edit-mode [data-edit-key],
+    body.edit-mode [data-edit-image] {
+      position: relative;
+      outline: 1.5px dashed transparent;
+      outline-offset: 4px;
+      transition: outline-color .15s, background .15s;
+      cursor: text;
+    }
+    body.edit-mode [data-edit-key]:hover,
+    body.edit-mode [data-edit-image]:hover {
+      outline-color: var(--c-accent-2);
+      background: rgba(184, 133, 71, 0.08);
+    }
+    body.edit-mode [data-edit-key][contenteditable="true"],
+    body.edit-mode [data-edit-image][contenteditable="true"] {
+      outline: 2px solid var(--c-accent);
+      outline-offset: 4px;
+      background: rgba(184, 133, 71, 0.12);
+      cursor: text;
+    }
+    body.edit-mode [data-edit-image] { cursor: pointer; }
+    body.edit-mode [data-edit-image]:hover::after {
+      content: "🖼️";
+    }
+
+    /* Lápis que aparece ao lado */
+    body.edit-mode [data-edit-key]::before,
+    body.edit-mode [data-edit-image]::before {
+      content: "✏️";
+      position: absolute;
+      top: -10px; right: -10px;
+      width: 22px; height: 22px;
+      background: var(--c-accent);
+      color: #fff;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 12px; line-height: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      opacity: 0; transform: scale(.6);
+      transition: all .2s var(--ease);
+      pointer-events: none;
+      z-index: 5;
+    }
+    body.edit-mode [data-edit-key]:hover::before,
+    body.edit-mode [data-edit-image]:hover::before {
+      opacity: 1; transform: scale(1);
+    }
+    body.edit-mode [data-edit-key][contenteditable="true"]::before,
+    body.edit-mode [data-edit-image][contenteditable="true"]::before {
+      opacity: 1; transform: scale(1); background: var(--c-success);
+    }
+
+    /* Toast de feedback */
+    .edit-toast {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: var(--c-success); color: #fff;
+      padding: 10px 20px; border-radius: 999px;
+      font: 600 13px/1 'Montserrat', sans-serif;
+      box-shadow: var(--shadow-md);
+      opacity: 0; pointer-events: none;
+      transition: all .3s var(--ease);
+      z-index: 300;
+    }
+    .edit-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 600px) {
+      .edit-toolbar { bottom: 12px; padding: 8px 10px; gap: 6px; }
+      .edit-toolbar button { padding: 6px 10px; font-size: 11px; }
+      .edit-toolbar .divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress bar -->
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+
+  <!-- Topbar -->
+  <header class="topbar" role="banner">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true" id="brandMark" style="background:transparent; padding:0; overflow:hidden" data-edit-image="company.logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+            <circle cx="50" cy="50" r="46" fill="#131313" stroke="#B88547" stroke-width="3"/>
+            <path d="M 22 62 Q 26 50 36 46 L 50 42 Q 64 38 72 44 Q 78 50 74 58 Q 70 66 60 64 L 50 62 L 40 64 Q 30 66 22 62 Z" fill="#FFFFFF"/>
+            <circle cx="76" cy="40" r="6" fill="#FFFFFF"/>
+            <path d="M 80 39 L 86 38 L 80 42 Z" fill="#B88547"/>
+            <circle cx="77" cy="39" r="1.2" fill="#131313"/>
+            <g transform="translate(50, 28)">
+              <rect x="-3" y="-12" width="6" height="24" fill="#B88547" rx="1"/>
+              <rect x="-9" y="-6" width="18" height="6" fill="#B88547" rx="1"/>
+            </g>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong id="brandName" data-edit-key="product.name">GASPAR</strong>
+          <span id="brandSub" data-edit-key="product.brandSubtitle">Treinamento de Vendas</span>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <button class="edit-toggle" id="editToggle" type="button" aria-label="Ativar modo de edição">
+          <span aria-hidden="true">✏️</span> <span id="editToggleLabel">Editar</span>
+        </button>
+        <div class="progress-pill"><span class="dot"></span> <span id="progressText">0% concluído</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toolbar flutuante do modo edição -->
+  <div class="edit-toolbar" id="editToolbar" role="toolbar" aria-label="Ações do modo edição">
+    <span class="label">MODO EDIÇÃO</span>
+    <span class="divider"></span>
+    <button id="editSave" type="button" title="Salvar no navegador (localStorage)">
+      <span aria-hidden="true">💾</span> Salvar
+    </button>
+    <button id="editExport" class="primary" type="button" title="Baixar HTML atualizado com os novos dados">
+      <span aria-hidden="true">⬇️</span> Exportar HTML
+    </button>
+    <span class="divider"></span>
+    <button id="editReset" type="button" title="Apagar todas as edições e voltar ao original">
+      <span aria-hidden="true">↩️</span> Restaurar
+    </button>
+    <button id="editExit" type="button" title="Sair do modo edição">
+      <span aria-hidden="true">✕</span> Sair
+    </button>
+  </div>
+
+  <!-- Toast de feedback -->
+  <div class="edit-toast" id="editToast" role="status" aria-live="polite"></div>
+
+  <!-- HERO — BANNER OFICIAL GASPAR (fullwidth) -->
+  <section class="hero-banner">
+    <div class="hero-banner-img" data-edit-image="hero.banner">
+      <img src="assets/banner-gaspar.png" alt="GASPAR Negócios JPA — Assistência Funeral e Telemedicina" />
+    </div>
+    <div class="container hero-banner-cta">
+      <h1 id="heroTitle" data-edit-key="hero.title">Domine o produto. <em>Conecte com o cliente.</em> Feche com confiança.</h1>
+      <p class="lead" id="heroLead" data-edit-key="hero.lead">Treinamento estruturado em módulos curtos, com método, scripts prontos e simulação de objeções — feito para o vendedor sair sabendo apresentar e fechar o produto com segurança.</p>
+      <div class="hero-g-cta">
+        <a href="#modulo-1" class="btn-gold">Começar Treinamento →</a>
+        <a href="#modulo-7" class="btn-outline-gold">Ir para Script de Fechamento</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Indicador de progresso "Módulo X de Y" -->
+  <div class="section-pill" id="sectionPill" aria-live="polite">
+    <span class="dot"></span> <span id="sectionPillText">Módulo 1 de 20</span>
+  </div>
+
+  <!-- Setas flutuantes de navegação entre sessões -->
+  <div class="floating-nav" role="navigation" aria-label="Navegação entre seções">
+    <button class="fnav-btn" id="fnavPrev" aria-label="Seção anterior" title="Seção anterior (↑)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+    <button class="fnav-btn" id="fnavNext" aria-label="Próxima seção" title="Próxima seção (↓)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </div>
+  <div class="fnav-label" id="fnavLabel" aria-hidden="true"></div>
+
+  <!-- Os módulos serão injetados via JS a partir do objeto CONFIG -->
+  <main id="modulesRoot"></main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" id="siteFooter">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <h4 id="footerCompany">Sua Corretora / Empresa</h4>
+          <p id="footerAbout" data-edit-key="company.about">Plataforma de treinamento comercial — uso interno. Configure esta landing para cada produto ou campanha através do objeto <code>CONFIG</code> no topo do JavaScript.</p>
+        </div>
+        <div>
+          <h4>Treinamento</h4>
+          <a href="#modulo-1">1. Abertura</a>
+          <a href="#modulo-2">2. Conexão Emocional</a>
+          <a href="#modulo-3">3. Coberturas</a>
+          <a href="#modulo-7">7. Script</a>
+          <a href="#modulo-9">9. Glossário</a>
+          <a href="#modulo-10">10. Exercícios</a>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <p id="footerPhone">📞 <span id="footerPhoneNum" data-edit-key="company.phone">0800 000 0000</span></p>
+          <p id="footerEmail">✉️ <span id="footerEmailAddr" data-edit-key="company.email">contato@suaempresa.com.br</span></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span id="footerYear">2026</span> · <span id="footerCopy">Sua Empresa. Todos os direitos reservados.</span></div>
+        <div class="warn">⚠️ Material de uso interno. Não exibir ao cliente final. Sempre consultar a apólice e as condições gerais vigentes do produto.</div>
+        <div style="margin-top:10px"><a href="formulario.html" style="color:var(--c-accent); text-decoration:underline; font-weight:600">📋 Compartilhar formulário de cadastro com o lead →</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copiado!</div>
+
+  <script>
+    /* =====================================================================
+       CONFIG — Objeto de configuração EDITÁVEL
+       Toda a landing page é gerada a partir deste objeto.
+       Para replicar para outra empresa, basta editar este bloco e salvar
+       com um novo nome (ex: treinamento-empresaX.html).
+       ===================================================================== */
+    const CONFIG = {
+
+      // === Identidade ===
+      product: {
+        name: "GASPAR",                     // Nome principal da marca
+        tagline: "Negócios JPA",            // Subtítulo (em caps espaçadas)
+        brandInitial: "G",                  // Letra de fallback do topbar
+        brandSubtitle: "Treinamento de Vendas"
+      },
+
+      company: {
+        name: "GASPAR — Negócios JPA",
+        about: "Plataforma de treinamento comercial — uso interno. Configure esta landing para cada produto ou campanha através do objeto CONFIG no topo do JavaScript.",
+        phone: "21 96544-3321",
+        email: "contato@gaspar.com.br"
+      },
+
+      // === Hero / Capa ===
+      hero: {
+        // title aceita HTML básico: use <em>...</em> para destacar a parte em itálico cobre
+        title: 'Domine o produto. <em>Conecte com o cliente.</em> Feche com confiança.',
+        lead: "Treinamento estruturado em módulos curtos, com método, scripts prontos e simulação de objeções — feito para o vendedor sair sabendo apresentar e fechar o produto com segurança."
+      },
+
+      // === Módulos do treinamento ===
+      // Adicione/edite módulos. Tipos suportados: 'emotional' | 'coverages' | 'life' | 'triggers' | 'script' | 'objection' | 'glossary' | 'quiz' | 'materials'
+      modules: [
+        // 1
+        {
+          id: 1,
+          tag: "Abertura",
+          title: "Mensagem principal e propósito do produto",
+          intro: "Comece pelo propósito. Antes de falar de números, alinhe a cabeça e o coração do vendedor com a razão de existir do produto.",
+          blocks: [
+            { type: "callout", variant: "quote", text: "{{PRODUCT_NAME}} não é apenas uma indenização. É um plano de DIGNIDADE E AMPARO para quem fica e de CUIDADO para quem vive." },
+            { type: "paragraph", text: "Propósito: muitos clientes enxergam este produto apenas pelo que acontece após a morte. Mas ele oferece benefícios utilizáveis em vida — teleconsulta, assistência psicológica, nutricional, desconto em medicamentos — cuidando da família em todos os momentos, não apenas no pior cenário." },
+            { type: "paragraph", text: "O vendedor precisa internalizar essa mensagem antes de apresentá-la. Quem acredita, vende com naturalidade." }
+          ]
+        },
+
+        // 2
+        {
+          id: 2,
+          tag: "Conexão Emocional",
+          title: "Gatilhos de dor que abrem a porta",
+          intro: "Não comece pelo preço. Comece pela dor. Quem sente a dor, abre espaço para a solução.",
+          blocks: [
+            { type: "callout", variant: "tip", title: "Dica do treinador", text: "Fale de DOR antes de DINHEIRO. Quando o cliente sente a dor, ele abre a porta para soluções. Aborde o problema antes de apresentar o produto." },
+            {
+              type: "pains",
+              items: [
+                { icon: "1", title: "Família fazendo vaquinha para enterrar parente", text: "A Assistência Funeral resolve isso na hora: basta um telefonema e a funerária cuida de tudo. A família não precisa ter dinheiro adiantado." },
+                { icon: "2", title: "Filho pequeno sem cesta básica porque o pai morreu", text: "A Cesta Básica garante 12 meses de amparo financeiro. É a comida na mesa enquanto a família se reorganiza." },
+                { icon: "3", title: "Acidente muda tudo em um instante", text: "Morte acidental paga em parcela única. É o recurso imediato para a família não ficar desamparada no pior momento." }
+              ]
+            }
+          ]
+        },
+
+        // 3
+        {
+          id: 3,
+          tag: "Coberturas",
+          title: "O que o produto entrega",
+          intro: "Apresente as coberturas com clareza. Use os valores e prazos como prova — apólice e condições gerais sempre à mão.",
+          blocks: [
+            {
+              type: "coverages",
+              items: [
+                { icon: "🛡️", title: "Morte Acidental", value: "R$ 10.000", note: "parcela única", desc: "Em caso de morte por acidente, a família recebe o valor em até 30 dias após análise e comprovação do sinistro.", highlights: ["Pagamento em parcela única", "Prazo de até 30 dias após análise", "Cobre acidentes de trânsito, quedas, afogamentos"] },
+                { icon: "⚱️", title: "Assistência Funeral", value: "R$ 7.000", note: "serviço prestado", accent: true, desc: "Serviço FUNERÁRIO completo, não reembolso. Acionamento por telefone 24h.", highlights: ["Urna, velório, carro funerário, coroa", "Traslado e registro de óbito", "Atendimento 24h / 7 dias por semana"] },
+                { icon: "🛒", title: "Cesta Básica", value: "12x R$ 400", note: "R$ 4.800 total", desc: "Em caso de morte do titular, a família recebe R$ 400 por mês durante 12 meses consecutivos.", highlights: ["Pagamento mensal por 12 meses", "Crédito em conta ou cartão de bonificação", "Independe de outros benefícios"] }
+              ]
+            }
+          ]
+        },
+
+        // 4
+        {
+          id: 4,
+          tag: "Benefícios em Vida",
+          title: "Cuida de você enquanto você vive",
+          intro: "Este é o principal argumento contra o 'não vou usar'. Mostre que o cliente usa amanhã, não daqui a décadas.",
+          blocks: [
+            {
+              type: "life",
+              items: [
+                { icon: "🩺", title: "Teleconsulta 24h", text: "Médico generalista na tela do celular, sem deslocamento. Febre no domingo? Dor no meio da noite? Resolve." },
+                { icon: "🧠", title: "Assistência Psicológica", text: "Até 20 atendimentos por problema. Situações de luto, ansiedade, doenças crônicas, violência, etc." },
+                { icon: "🥗", title: "Assistência Nutricional", text: "Sem limite de consultas. Dúvidas sobre hipertensão, diabetes, alergias, alimentação por sonda." },
+                { icon: "💊", title: "Desconto em Medicamentos", text: "Até 40% de desconto em redes conveniadas. O plano pode se pagar só com a economia na farmácia." },
+                { icon: "🤝", title: "Assistência Social", text: "Orientação sobre direitos, auxílios governamentais, documentação e benefícios previdenciários." },
+                { icon: "🎁", title: "Sorteio Mensal", text: "Concorra a R$ 10 mil todo mês, sem custo adicional. Baseado na Loteria Federal, regulamentado pela SUSEP." }
+              ]
+            }
+          ]
+        },
+
+        // 5
+        {
+          id: 5,
+          tag: "Gatilhos de Venda",
+          title: "Frases prontas para cada benefício",
+          intro: "Memorize as frases curtas. Use no momento certo. A linguagem certa vale mais que o melhor argumento técnico.",
+          blocks: [
+            {
+              type: "triggers",
+              items: [
+                { n: 1, title: "Morte Acidental (R$ 10k)", text: "\"10 mil pra família não ficar desamparada.\"" },
+                { n: 2, title: "Assistência Funeral (R$ 7k)", text: "\"Ninguém merece vaquinha no momento da dor.\"" },
+                { n: 3, title: "Cesta Básica (12x R$ 400)", text: "\"Um ano de comida garantida.\"" },
+                { n: 4, title: "Teleconsulta", text: "\"Médico 24h na sua mão.\"" },
+                { n: 5, title: "Psicólogo + Nutricionista", text: "\"Cuida da cabeça e da saúde.\"" },
+                { n: 6, title: "Desconto em remédios", text: "\"O plano se paga na farmácia.\"" },
+                { n: 7, title: "Sorteio de R$ 10 mil", text: "\"Todo mês você pode ganhar.\"" }
+              ]
+            }
+          ]
+        },
+
+        // 6
+        {
+          id: 6,
+          tag: "Argumento-Chave",
+          title: "O diferencial: cuidado em vida, não só depois",
+          intro: "Quebre o principal argumento contra o produto: 'não vou usar'. Mostre que o cliente usa amanhã.",
+          blocks: [
+            { type: "callout", variant: "quote", text: "\"A maioria dos produtos só entrega depois que a pessoa morre. Este aqui CUIDA DE VOCÊ ENQUANTO VOCÊ VIVE.\"" },
+            { type: "paragraph", text: "Ao destacar os benefícios em vida, o cliente percebe que o produto tem valor real e presente, não apenas futuro e incerto. Isso muda a conversa de 'morte' para 'vida' — e o cliente entende que o produto cuida dele hoje, não só depois." },
+            { type: "callout", variant: "tip", title: "Quando o cliente diz 'não vou usar'", text: "Mostre teleconsulta, desconto em remédios, apoio psicológico e nutricional gratuitos. Tudo disponível agora, sem precisar de sinistro." }
+          ]
+        },
+
+        // 7
+        {
+          id: 7,
+          tag: "Script de Fechamento",
+          title: "A fala que fecha a venda",
+          intro: "Fale com naturalidade. Faça pausas entre os benefícios. Adapte a linguagem para o perfil do cliente.",
+          blocks: [
+            {
+              type: "script",
+              opener: "Por menos do que um lanche por dia, você tem:",
+              items: [
+                "Médico 24h — uso em vida",
+                "Remédios até 40% mais barato — uso em vida",
+                "Suporte psicológico e nutricional — uso em vida",
+                "Proteção para sua família — benefícios extensos",
+                "Concorre a R$ 10 mil todo mês — Sorte em Vida",
+                "Assistência funeral — Tranquilidade Familiar",
+                "Cesta básica por um ano — Tranquilidade Familiar"
+              ],
+              closer: "QUAL OUTRO PLANO FAZ ISSO POR VOCÊ?"
+            },
+            {
+              type: "tips",
+              items: [
+                "Fale com naturalidade, faça pausas entre os benefícios.",
+                "Observe a reação do cliente e enfatize os benefícios que mais interessam.",
+                "Use exemplos reais e situações do dia a dia.",
+                "Adapte a linguagem para diferentes perfis de clientes."
+              ]
+            }
+          ]
+        },
+
+        // 8
+        {
+          id: 8,
+          tag: "Quebrando Objeções",
+          title: "Quando o cliente diz 'não preciso'",
+          intro: "O treinamento não termina até o vendedor saber responder as objeções com naturalidade. Pratique até soar espontâneo.",
+          blocks: [
+            {
+              type: "objection",
+              client: "\"Não vou morrer tão cedo, não preciso de seguro.\"",
+              trainer: "Você diz que não vai morrer tão cedo, e provavelmente está certo. Mas está preparado para o que pode acontecer amanhã? Um acidente, uma doença súbita, uma queda — nada disso avisa antes de acontecer. Com este produto, você tem médico na tela 24h sem esperar, desconto em medicamentos que alivia o bolso, apoio psicológico e nutricional gratuitos quando mais precisa, e assistência funeral para não sobrecarregar a família no momento mais difícil. E ainda participa de um sorteio mensal. Você está apostando que nada vai acontecer… mas e se acontecer?"
+            },
+            {
+              type: "tips",
+              items: [
+                "Pratique esta resposta até soar natural e espontânea.",
+                "Adapte a linguagem para jovens, famílias e idosos.",
+                "Enfatize os benefícios que mais interessam a cada pessoa.",
+                "Use histórias reais e situações do dia a dia para ilustrar."
+              ]
+            }
+          ]
+        },
+
+        // 9
+        {
+          id: 9,
+          tag: "Glossário",
+          title: "Termos que todo vendedor precisa dominar",
+          intro: "Use o glossário como consulta rápida durante o treinamento e como referência no dia a dia de vendas.",
+          blocks: [
+            {
+              type: "glossary",
+              items: [
+                { term: "Morte Acidental", def: "Benefício pago em parcela única (R$ 10 mil) à família se o segurado morrer por acidente: evento súbito, involuntário e externo (trânsito, quedas, afogamentos). Prazo de até 30 dias após análise e comprovação." },
+                { term: "Assistência Funeral", def: "Serviço funerário prestado na hora (R$ 7 mil), inclui urna, velório, carro, coroa, traslado. NÃO é reembolso — é serviço acionado por telefone 24h." },
+                { term: "Cesta Básica", def: "Benefício de R$ 400 por mês, durante 12 meses (total R$ 4.800), pago à família em caso de morte do titular, via conta bancária ou cartão de bonificação." },
+                { term: "Capital Segurado", def: "Valor máximo que a seguradora paga em caso de sinistro. Ex.: Morte Acidental R$ 10k · Funeral R$ 7k · Cesta Básica R$ 4,8k." },
+                { term: "Sinistro", def: "Ocorrência do evento coberto pelo seguro. Comunicar à central o mais breve possível para não prejudicar o atendimento." },
+                { term: "Beneficiário", def: "Pessoa(s) que recebem a indenização. Definidos pelo segurado na contratação, com liberdade total pela Lei 15.040/2024." },
+                { term: "Estipulante", def: "Quem contrata o seguro coletivo — normalmente a empresa (pessoa jurídica) que oferece o benefício aos colaboradores." },
+                { term: "Segurado", def: "Pessoa física protegida pelo seguro. Tem direitos (usar benefícios, indicar beneficiários) e deveres (pagar prêmio, comunicar sinistros)." },
+                { term: "Prêmio", def: "Valor pago pelo seguro. Formas: cartão de crédito, PIX ou boleto. Periodicidade: mensal, trimestral, semestral ou anual." },
+                { term: "Carência", def: "Período inicial após a contratação em que algumas coberturas ainda não estão disponíveis. Consultar regras administrativas do produto." },
+                { term: "Indenização", def: "Pagamento feito pela seguradora ao ocorrer um sinistro coberto. Prazo varia conforme tipo e complexidade." },
+                { term: "Apólice", def: "Documento que formaliza o contrato. É a 'lei' do seguro: traz todas as coberturas, valores e condições." }
+              ]
+            }
+          ]
+        },
+
+        // 10
+        {
+          id: 10,
+          tag: "Exercícios Práticos",
+          title: "Hora de testar o que você aprendeu",
+          intro: "Responda as perguntas abaixo. Sua resposta fica só no seu navegador — use como treino antes da prova com o cliente real.",
+          blocks: [
+            {
+              type: "quiz",
+              items: [
+                { q: "Se eu morrer por acidente, meu seguro deixa ______ para minha família não ficar ______.", a: ["R$ 10 mil", "desamparada"] },
+                { q: "A Cesta Básica garante ______ meses de comida no valor de ______ por mês.", a: ["12", "R$ 400"] },
+                { q: "A Teleconsulta funciona ______ horas por dia.", a: ["24"] },
+                { q: "O desconto em medicamentos pode chegar a até ______%.", a: ["40"] },
+                { q: "Todo mês há ______ sorteio baseado na ______ Federal.", a: ["1", "Loteria"] },
+                { q: "A Assistência Psicológica oferece até ______ atendimentos por ______.", a: ["20", "problema"] }
+              ]
+            }
+          ]
+        },
+
+        // 11
+        {
+          id: 11,
+          tag: "Materiais & Telefones",
+          title: "Recursos de apoio e contatos úteis",
+          intro: "Tenha sempre à mão a apólice, o regulamento do sorteio e os telefones de acionamento. Mostrar o material ao cliente é parte da venda.",
+          blocks: [
+            {
+              type: "materials",
+              items: [
+                { icon: "📄", title: "Apólice e Endosso", text: "Mostre os valores reais das coberturas. A apólice é a prova de que tudo é contratual." },
+                { icon: "📜", title: "Regulamento do Sorteio", text: "Lastreado em título de capitalização, conforme SUSEP. Mostra que o sorteio é legal e regulamentado." },
+                { icon: "📚", title: "Guia de Vendas", text: "Exemplos reais de utilização dos serviços. Comprova que os benefícios não são apenas teóricos." },
+                { icon: "📑", title: "Condições Gerais", text: "Detalha todas as regras e coberturas. Reforça que as promessas são reais e contratuais." }
+              ]
+            },
+            {
+              type: "phones",
+              items: [
+                { label: "Central de Atendimento 24h (Assistência Funeral)", number: "0800 100 1701", hours: "24 horas, 7 dias por semana" },
+                { label: "Assistência Psicológica e Nutricional", number: "0800 829 1301", hours: "Seg a Sex, 8h às 20h" },
+                { label: "Teleconsulta (Portal)", number: "portoseguro.vidaclass.com.br", hours: "24h via app e web" }
+              ]
+            }
+          ]
+        },
+
+        // 12 — Telemedicina: 12 especialidades
+        {
+          id: 12,
+          tag: "Serviço de Telemedicina",
+          title: "Cuidado médico na palma da mão",
+          intro: "Atendimento médico por telefone ou videochamada: praticidade, agilidade e segurança para o cliente e a família. Mostra que o produto vai além do papel — é serviço vivo.",
+          blocks: [
+            {
+              type: "stats",
+              items: [
+                { value: "12", label: "Especialidades" },
+                { value: "2",  label: "Dependentes" },
+                { value: "∞",   label: "Consultas" },
+                { value: "100%", label: "Digital" }
+              ]
+            },
+            {
+              type: "callout",
+              variant: "tip",
+              title: "O que é o serviço",
+              text: "Uma solução de telemedicina criada para facilitar o acesso à orientação médica, sem deslocamento e com atendimento totalmente digital."
+            },
+            {
+              type: "specs",
+              items: [
+                { icon: "🩺", name: "Clínico Geral",          badge: "Titular + dependentes" },
+                { icon: "👶", name: "Pediatria",              badge: "Titular" },
+                { icon: "🧓", name: "Geriatria",              badge: "Titular" },
+                { icon: "🧠", name: "Psiquiatria",            badge: "Titular" },
+                { icon: "🖐️", name: "Dermatologia",           badge: "Titular" },
+                { icon: "👨‍👩‍👧", name: "Medicina da Família",  badge: "Titular" },
+                { icon: "🩸", name: "Endocrinologia",         badge: "Titular" },
+                { icon: "♀️", name: "Ginecologia",            badge: "Titular" },
+                { icon: "💊", name: "Gastroenterologia",      badge: "Titular" },
+                { icon: "👂", name: "Otorrinolaringologia",   badge: "Titular" },
+                { icon: "🧠", name: "Neurologia",             badge: "Titular" },
+                { icon: "❤",  name: "Cardiologia",            badge: "Titular" }
+              ]
+            }
+          ]
+        },
+
+        // 13 — Como funciona (jornada)
+        {
+          id: 13,
+          tag: "Como Funciona",
+          title: "Simples, rápido e totalmente digital",
+          intro: "Todo o processo foi desenhado para ser intuitivo: da contratação à consulta, em poucos cliques e sem burocracia. Use esta jornada para eliminar a objeção 'é complicado'.",
+          blocks: [
+            {
+              type: "journey",
+              items: [
+                { title: "Contratar",  text: "Adquira o serviço." },
+                { title: "Aguardar",   text: "Período de elegibilidade." },
+                { title: "Registrar",  text: "Cadastre-se e adicione dependentes." },
+                { title: "Agendar",    text: "Marque a consulta online." },
+                { title: "Comparecer", text: "Atenda por telefone ou vídeo." }
+              ]
+            },
+            {
+              type: "callout",
+              variant: "tip",
+              title: "O titular cadastra os dependentes",
+              text: "O titular realiza o cadastro dos dependentes diretamente no ambiente digital, de forma rápida e sem burocracia. Dependentes têm acesso a Clínico Geral."
+            }
+          ]
+        },
+
+        // 14 — Por que escolher (benefícios)
+        {
+          id: 14,
+          tag: "Por Que Escolher",
+          title: "Principais benefícios que o cliente leva",
+          intro: "São seis benefícios que sustentam a decisão de compra. Não tente falar de todos de uma vez — escolha os 2 ou 3 que mais ressoam com o perfil do cliente.",
+          blocks: [
+            {
+              type: "benefits",
+              items: [
+                { icon: "🏠", title: "Atendimento sem sair de casa", text: "Resolve sem deslocamento, sem trânsito, sem espera em sala." },
+                { icon: "📅", title: "Praticidade no agendamento",    text: "Marca em poucos cliques, pelo celular ou pelo computador." },
+                { icon: "📞", title: "Acesso por telefone ou vídeo",  text: "O cliente escolhe o canal mais confortável." },
+                { icon: "🩺", title: "Diversas especialidades",      text: "12 áreas médicas disponíveis para o titular." },
+                { icon: "👨‍👩‍👧", title: "Inclusão de dependentes", text: "Até 2 dependentes com acesso a Clínico Geral." },
+                { icon: "🛟", title: "Suporte em caso de dúvida",     text: "Atendimento personalizado 24h." }
+              ]
+            }
+          ]
+        },
+
+        // 15 — Para quem é indicado (perfis)
+        {
+          id: 15,
+          tag: "Para Quem É Indicado",
+          title: "Feito para quem valoriza praticidade",
+          intro: "O público do serviço é bem definido. Quando o cliente se reconhece em um destes perfis, a venda vem com naturalidade — não é convencimento, é identificação.",
+          blocks: [
+            {
+              type: "profiles",
+              items: [
+                { lbl: "Perfil 1", text: "Pessoas que valorizam <b>praticidade, agilidade e acesso digital à saúde</b> — não querem perder tempo em fila de pronto-socorro." },
+                { lbl: "Perfil 2", text: "Quem busca <b>facilidade de acesso à orientação médica</b> sem deslocamento ou longas esperas." },
+                { lbl: "Perfil 3", text: "Quem precisa de <b>apoio médico contínuo</b> para as demandas cotidianas de saúde da família." },
+                { lbl: "Perfil 4", text: "Quem quer <b>proteger toda a família com poucos cliques</b> — uma solução prática e imediata." }
+              ]
+            }
+          ]
+        },
+
+        // 16 — FAQ
+        {
+          id: 16,
+          tag: "Dúvidas Comuns",
+          title: "FAQ — o que o cliente mais pergunta",
+          intro: "Tenha estas respostas na ponta da língua. Cliente que pergunta e recebe resposta imediata confia mais e fecha mais rápido.",
+          blocks: [
+            {
+              type: "faq",
+              items: [
+                { q: "Quantas consultas posso realizar por mês?", a: "O atendimento é <b>ilimitado</b>, ou seja, o titular e seus dependentes podem usar quantas vezes precisarem." },
+                { q: "Como utilizo o serviço de atendimento médico online?", a: "Basta acessar o site <b>portoseguro.vidaclass.com.br</b>, clicar em <b>Entrar</b>, informar o CPF e escolher o atendimento médico que necessita." },
+                { q: "Qual a faixa etária válida para o titular?", a: "A faixa etária válida é de <b>14 a 70 anos</b> no momento da adesão ao serviço." },
+                { q: "Quantos dependentes posso incluir?", a: "Até <b>2 dependentes</b> por titular, com acesso ao atendimento de <b>Clínico Geral</b> — ideal para orientação médica inicial no dia a dia." },
+                { q: "Os dependentes têm acesso às 12 especialidades?", a: "Não. Os dependentes têm acesso ao <b>Clínico Geral</b>, ideal para orientação inicial. As 12 especialidades são disponíveis para o titular." },
+                { q: "Preciso sair de casa para ser atendido?", a: "Não. O atendimento é <b>100% digital</b>, por telefone ou videochamada, sem necessidade de deslocamento." },
+                { q: "Existe desconto em farmácias?", a: "Sim — <b>até 40% off</b> em farmácias credenciadas. Basta apresentar o CPF na rede conveniada." }
+              ]
+            }
+          ]
+        },
+
+        // 17 — Contatos completos
+        {
+          id: 17,
+          tag: "Contatos",
+          title: "Fale com a gente",
+          intro: "Tenha estes números e canais salvos. Vendedor que responde rápido sobre o produto fecha mais.",
+          blocks: [
+            {
+              type: "phones",
+              items: [
+                { label: "Atendimento Comercial — GASPAR",  number: "21 96544-3321", hours: "Seg a Sex, horário comercial" },
+                { label: "Atendimento Comercial — GASPAR",  number: "21 96903-8294", hours: "Seg a Sex, horário comercial" },
+                { label: "E-mail Corporativo",              number: "contato@gaspar.com.br", hours: "Resposta em até 1 dia útil" },
+                { label: "Site",                            number: "gaspar.com.br",         hours: "Disponível 24h" },
+                { label: "Instagram",                       number: "@gaspar.negocios",      hours: "Conteúdo diário" },
+                { label: "Portal de Telemedicina (Vida Class)", number: "portoseguro.vidaclass.com.br",   hours: "Atendimento médico online 24h" }
+              ]
+            }
+          ]
+        },
+
+        // 18 — VISÃO GERAL: Benefícios do plano (esquerda do split original)
+        {
+          id: 18,
+          tag: "Visão Geral",
+          title: "Assistência Funeral completa e serviços médicos em um único plano",
+          intro: "Cuidamos de tudo para que você e sua família tenham tranquilidade, proteção e segurança todos os dias. Tudo que o cliente precisa, em um só plano.",
+          blocks: [
+            {
+              type: "callout",
+              variant: "quote",
+              text: "Tudo em um só plano — funerária, seguro, telemedicina, benefícios em vida. Apresentar o panorama completo antes de detalhar valor por valor."
+            },
+            {
+              type: "benefit-list",
+              items: [
+                { icon: "🚗", title: "FUNERAL COMPLETO", text: "Cobertura de até R$ 7.000,00 reais." },
+                { icon: "🛡️", title: "SEGURO DE VIDA", text: "Morte acidental de R$ 10.000,00 reais." },
+                { icon: "🛒", title: "BENEFÍCIO CESTA BÁSICA", text: "Em caso de morte: R$ 4.800,00 (12x R$ 400,00 por mês, durante um ano)." },
+                { icon: "🩺", title: "TELEMEDICINA", text: "Com 12 especialidades, 100% digital, ilimitado." },
+                { icon: "💊", title: "DESCONTO EM MEDICAMENTOS", text: "Em farmácias credenciadas (até 40% off)." },
+                { icon: "🍀", title: "SORTEIO MENSAL", text: "Pela Loteria Federal — R$ 10.000,00 todo mês." },
+                { icon: "♾️", title: "SEM LIMITE MÁXIMO DE VIDA", text: "Pode acumular por quantos anos precisar." },
+                { icon: "🌎", title: "COBERTURA NACIONAL", text: "Atende em todo o território brasileiro." }
+              ]
+            }
+          ]
+        },
+
+        // 19 — TELEMEDICINA 12 ESPECIALIDADES (direita do split original)
+        {
+          id: 19,
+          tag: "Telemedicina",
+          title: "12 especialidades médicas à distância, 24h por dia",
+          intro: "Atendimento personalizado 24h, sem deslocamento, com a segurança de uma equipe médica sempre disponível para o titular e sua família.",
+          blocks: [
+            {
+              type: "callout",
+              variant: "tip",
+              title: "Como apresentar este card",
+              text: "Use este card como argumento visual durante o atendimento. Cada especialidade pode ser destacada conforme o perfil do cliente (idoso → geriatria, mulher → ginecologia, criança → pediatria, rotina → clínico geral)."
+            },
+            {
+              type: "dark-card",
+              title: { main: "TELEMEDICINA ", highlight: "24h", sub: "COM 12 ESPECIALIDADES" },
+              specs: [
+                { icon: "🩺", name: "Clínico Geral" },
+                { icon: "🧠", name: "Psiquiatria" },
+                { icon: "🧓", name: "Geriatria" },
+                { icon: "🧠", name: "Neurologia" },
+                { icon: "🩸", name: "Pediatria" },
+                { icon: "👂", name: "Otorrinolaringologia" },
+                { icon: "❤",  name: "Cardiologia" },
+                { icon: "💧", name: "Endocrinologia" },
+                { icon: "♀️", name: "Ginecologia" },
+                { icon: "🖐️", name: "Gastroenterologia" },
+                { icon: "🧴", name: "Dermatologia" },
+                { icon: "👨‍👩‍👧", name: "Medicina da Família" }
+              ],
+              highlight: "ATENDIMENTO 24h PARA CLÍNICO GERAL*",
+              quicks: [
+                { icon: "🕐", text: "<b>CONSULTA 24h</b> PARA CLÍNICO GERAL*" },
+                { icon: "📅", text: "DEMAIS ESPECIALIDADES <b>POR AGENDAMENTO</b>" },
+                { icon: "👥", text: "MAIS PRATICIDADE, <b>MAIS SAÚDE, MAIS VOCÊ!</b>" }
+              ],
+              footnote: "* Consulta 24h para Clínico Geral. As demais especialidades são por agendamento."
+            }
+          ]
+        },
+
+        // 20 — Faixa Porto Seguro
+        {
+          id: 20,
+          tag: "Seguradora",
+          title: "",
+          intro: "",
+          blocks: [
+            {
+              type: "portoseg-strip",
+              leftLabel: "Serviços realizados pela",
+              brandName: "PORTO SEGURO",
+              brandSub: ""
+            }
+          ]
+        },
+
+        // 21 — Valores (4 cards de fechamento)
+        {
+          id: 21,
+          tag: "Nossos Valores",
+          title: "Cuidamos do que realmente importa",
+          intro: "Estes são os valores que sustentam cada venda que você faz. Mostre ao cliente que por trás do produto existe uma empresa sólida, humana e comprometida.",
+          blocks: [
+            {
+              type: "values",
+              items: [
+                { icon: "🤝", title: "CONFIANÇA",  text: "UMA EMPRESA SÓLIDA E LÍDER NO MERCADO." },
+                { icon: "👥", title: "ATENDIMENTO", text: "HUMANO, ÁGIL E ESPECIALIZADO." },
+                { icon: "✓",  title: "QUALIDADE",  text: "E EXCELÊNCIA QUE VOCÊ JÁ CONHECE." },
+                { icon: "❤",  title: "CUIDAMOS",   text: "DO QUE REALMENTE IMPORTA: A SUA TRANQUILIDADE E A DA SUA FAMÍLIA." }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    /* =====================================================================
+       RENDERIZAÇÃO — A partir daqui, não é preciso editar para replicar.
+       ===================================================================== */
+
+    // Helpers
+    const $  = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    const root = $('#modulesRoot');
+    const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 1800); };
+
+    // Substitui {{VAR}} em qualquer string usando o objeto CONFIG
+    const ctxSubstitute = (s) => {
+      if (typeof s !== 'string') return s;
+      return s
+        .replaceAll('{{PRODUCT_NAME}}', CONFIG.product.name)
+        .replaceAll('{{PRODUCT_TAGLINE}}', CONFIG.product.tagline)
+        .replaceAll('{{COMPANY_NAME}}', CONFIG.company.name);
+    };
+
+    // Aplica identidade no header / hero / footer
+    function applyIdentity() {
+      // Topbar (legado, mantido se existir) — só troca texto se NÃO for SVG
+      const bm = $('#brandMark');
+      if (bm && !bm.querySelector('svg')) bm.textContent = CONFIG.product.brandInitial;
+      if ($('#brandName'))  $('#brandName').textContent  = CONFIG.product.name;
+      if ($('#brandSub'))   $('#brandSub').textContent   = CONFIG.product.brandSubtitle;
+      // Hero novo (GASPAR)
+      if ($('#brandBigName'))  $('#brandBigName').textContent  = CONFIG.product.name;
+      if ($('#brandBigSub'))   $('#brandBigSub').textContent   = CONFIG.product.tagline;
+      if ($('#heroTitle')) {
+        // Aceita <em>...</em> para destaque
+        $('#heroTitle').innerHTML = ctxSubstitute(CONFIG.hero.title);
+      }
+      if ($('#heroLead'))   $('#heroLead').textContent   = ctxSubstitute(CONFIG.hero.lead);
+      if ($('#footerCompany')) $('#footerCompany').textContent = CONFIG.company.name;
+      if ($('#footerAbout'))    $('#footerAbout').textContent    = CONFIG.company.about;
+      if ($('#footerPhoneNum'))$('#footerPhoneNum').textContent = CONFIG.company.phone;
+      if ($('#footerEmailAddr'))$('#footerEmailAddr').textContent = CONFIG.company.email;
+      if ($('#footerYear'))     $('#footerYear').textContent     = new Date().getFullYear();
+      if ($('#footerCopy'))     $('#footerCopy').textContent     = `${CONFIG.company.name}. Todos os direitos reservados.`;
+      document.title = `Treinamento · ${CONFIG.product.name}`;
+    }
+
+    // Render de blocos reutilizáveis
+    function renderBlock(block, moduleIdx, blockIdx) {
+      const wrap = document.createElement('div');
+      const t = block.type;
+      const bp = `modules.${moduleIdx}.blocks.${blockIdx}`;
+      if (t === 'paragraph') {
+        wrap.innerHTML = `<p data-edit-key="${bp}.text">${ctxSubstitute(block.text)}</p>`;
+      }
+      else if (t === 'callout') {
+        const v = block.variant || 'quote';
+        if (v === 'quote') {
+          wrap.innerHTML = `<blockquote class="hero-quote" style="margin:0" data-edit-key="${bp}.text">${ctxSubstitute(block.text)}</blockquote>`;
+        } else if (v === 'tip') {
+          const t = block.title || 'Dica';
+          const longTitle = t.length > 30;
+          const lbl = longTitle ? '' : `<span class="lbl">💡 ${ctxSubstitute(t)}</span>`;
+          const h4  = longTitle ? `<h4 style="font-size:16px;line-height:1.4" data-edit-key="${bp}.title">${ctxSubstitute(t)}</h4>` : `<h4 data-edit-key="${bp}.title">${ctxSubstitute(t)}</h4>`;
+          wrap.innerHTML = `<div class="dica">${lbl}${h4}<p data-edit-key="${bp}.text">${ctxSubstitute(block.text)}</p></div>`;
+        }
+      }
+      else if (t === 'pains') {
+        const items = block.items.map((i, idx) => `
+          <div class="pain-item">
+            <div class="ic">${i.icon}</div>
+            <div><b data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(i.title)}</b><p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(i.text)}</p></div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="pain-card"><div class="pain-list">${items}</div></div>`;
+      }
+      else if (t === 'coverages') {
+        const items = block.items.map((c, idx) => `
+          <article class="cov-card ${c.accent ? 'accent' : ''}">
+            <div class="ic">${c.icon}</div>
+            <h3 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(c.title)}</h3>
+            <div class="price"><span data-edit-key="${bp}.items.${idx}.value">${c.value}</span> <small data-edit-key="${bp}.items.${idx}.note">${c.note || ''}</small></div>
+            <p data-edit-key="${bp}.items.${idx}.desc">${ctxSubstitute(c.desc)}</p>
+            <ul>${c.highlights.map((h, hi) => `<li data-edit-key="${bp}.items.${idx}.highlights.${hi}">${ctxSubstitute(h)}</li>`).join('')}</ul>
+          </article>`).join('');
+        wrap.innerHTML = `<div class="coverage-grid">${items}</div>`;
+      }
+      else if (t === 'life') {
+        const items = block.items.map((l, idx) => `
+          <div class="life-card">
+            <div class="em-ic">${l.icon}</div>
+            <h4 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(l.title)}</h4>
+            <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(l.text)}</p>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="life-grid">${items}</div>`;
+      }
+      else if (t === 'triggers') {
+        const items = block.items.map((tr, idx) => `
+          <div class="trigger">
+            <div class="num">${tr.n}</div>
+            <div>
+              <h4 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(tr.title)}</h4>
+              <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(tr.text)}</p>
+            </div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="triggers">${items}</div>`;
+      }
+      else if (t === 'script') {
+        const items = block.items.map((s, i) => `
+          <div class="script-item"><div class="n">${i+1}</div><p data-edit-key="${bp}.items.${i}">${ctxSubstitute(s)}</p></div>`).join('');
+        wrap.innerHTML = `
+          <div class="script-box">
+            <div class="lbl">Fala de fechamento</div>
+            <h3 data-edit-key="${bp}.opener">${ctxSubstitute(block.opener)}</h3>
+            <div class="script-list">${items}</div>
+            <div class="script-cta" data-edit-key="${bp}.closer">"${ctxSubstitute(block.closer)}"</div>
+          </div>`;
+      }
+      else if (t === 'tips') {
+        const items = block.items.map((ti, i) => `<li style="color:#78350F; margin-bottom:6px" data-edit-key="${bp}.items.${i}">${ctxSubstitute(ti)}</li>`).join('');
+        wrap.innerHTML = `<div class="dica" style="margin-top:24px"><span class="lbl">📌 Dicas Práticas</span><ul style="margin:8px 0 0; padding-left:18px">${items}</ul></div>`;
+      }
+      else if (t === 'objection') {
+        const trainerId = `obj-${Math.random().toString(36).slice(2,8)}`;
+        wrap.innerHTML = `
+          <div class="objection">
+            <div class="obj-card client">
+              <div class="lbl">Cliente</div>
+              <p data-edit-key="${bp}.client">${ctxSubstitute(block.client)}</p>
+            </div>
+            <div class="obj-card trainer">
+              <div class="lbl">Vendedor</div>
+              <p id="${trainerId}" style="filter: blur(6px); user-select:none" data-edit-key="${bp}.trainer">${ctxSubstitute(block.trainer)}</p>
+              <button class="reveal-btn" data-target="${trainerId}">👁 Revelar resposta</button>
+            </div>
+          </div>`;
+        setTimeout(() => {
+          const btn = wrap.querySelector('.reveal-btn');
+          if (btn) btn.addEventListener('click', () => {
+            const tgt = wrap.querySelector('#' + btn.dataset.target);
+            tgt.style.filter = 'none';
+            tgt.style.userSelect = 'auto';
+            btn.remove();
+          });
+        }, 0);
+      }
+      else if (t === 'glossary') {
+        const items = block.items.map((g, idx) => `
+          <details class="term">
+            <summary data-edit-key="${bp}.items.${idx}.term">${ctxSubstitute(g.term)}</summary>
+            <div class="body" data-edit-key="${bp}.items.${idx}.def">${ctxSubstitute(g.def)}</div>
+          </details>`).join('');
+        wrap.innerHTML = `<div class="glossary">${items}</div>`;
+      }
+      else if (t === 'quiz') {
+        const items = block.items.map((q, i) => `
+          <div class="q-card" data-q="${i}">
+            <div class="q-num">Pergunta ${i+1} de ${block.items.length}</div>
+            <div class="q-text" data-edit-key="${bp}.items.${i}.q">${ctxSubstitute(q.q)}</div>
+            <input type="text" placeholder="Digite sua resposta…" autocomplete="off" />
+            <button class="check-btn">Verificar</button>
+            <div class="feedback ok">✅ Correto!</div>
+            <div class="feedback err">❌ Quase. Resposta esperada: <b>${q.a.join(' / ')}</b></div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="quiz">${items}</div>`;
+        setTimeout(() => {
+          wrap.querySelectorAll('.q-card').forEach(card => {
+            const btn = card.querySelector('.check-btn');
+            const input = card.querySelector('input');
+            const answers = block.items[+card.dataset.q].a.map(a => a.toLowerCase().trim());
+            btn.addEventListener('click', () => {
+              const v = input.value.toLowerCase().trim();
+              const ok = answers.some(a => v.includes(a));
+              card.classList.remove('correct','wrong');
+              card.classList.add(ok ? 'correct' : 'wrong');
+            });
+            input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+          });
+        }, 0);
+      }
+      else if (t === 'materials') {
+        const items = block.items.map((m, idx) => `
+          <div class="mat-card">
+            <div class="ic">${m.icon}</div>
+            <h4 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(m.title)}</h4>
+            <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(m.text)}</p>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="materials">${items}</div>`;
+      }
+      else if (t === 'specs') {
+        const items = block.items.map((s, idx) => `
+          <div class="spec-card">
+            <div class="ic">${s.icon}</div>
+            <div>
+              <h4 data-edit-key="${bp}.items.${idx}.name">${ctxSubstitute(s.name)}</h4>
+              ${s.badge ? `<span class="badge" data-edit-key="${bp}.items.${idx}.badge">${ctxSubstitute(s.badge)}</span>` : ''}
+            </div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="spec-grid">${items}</div>`;
+      }
+      else if (t === 'journey') {
+        const items = block.items.map((s, i) => `
+          <div class="step reveal">
+            <div class="n">${i + 1}</div>
+            <div>
+              <h4 data-edit-key="${bp}.items.${i}.title">${ctxSubstitute(s.title)}</h4>
+              <p data-edit-key="${bp}.items.${i}.text">${ctxSubstitute(s.text)}</p>
+            </div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="journey">${items}</div>`;
+      }
+      else if (t === 'benefits') {
+        const items = block.items.map((b, idx) => `
+          <div class="benefit">
+            <div class="ic">${b.icon || '✓'}</div>
+            <div>
+              <h4 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(b.title)}</h4>
+              <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(b.text)}</p>
+            </div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="benefit-grid">${items}</div>`;
+      }
+      else if (t === 'profiles') {
+        const items = block.items.map((p, idx) => `
+          <div class="profile-card">
+            <div class="lbl" data-edit-key="${bp}.items.${idx}.lbl">${ctxSubstitute(p.lbl || 'Perfil')}</div>
+            <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(p.text)}</p>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="profile-grid">${items}</div>`;
+      }
+      else if (t === 'stats') {
+        const items = block.items.map((s, idx) => `
+          <div class="stat-cell">
+            <b data-edit-key="${bp}.items.${idx}.value">${ctxSubstitute(s.value)}</b>
+            <span data-edit-key="${bp}.items.${idx}.label">${ctxSubstitute(s.label)}</span>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="stats-banner">${items}</div>`;
+      }
+      else if (t === 'faq') {
+        const items = block.items.map((f, idx) => `
+          <details class="faq-item">
+            <summary data-edit-key="${bp}.items.${idx}.q">${ctxSubstitute(f.q)}</summary>
+            <div class="body" data-edit-key="${bp}.items.${idx}.a">${ctxSubstitute(f.a)}</div>
+          </details>`).join('');
+        wrap.innerHTML = `<div class="faq">${items}</div>`;
+      }
+      else if (t === 'benefit-list') {
+        const items = block.items.map((b, idx) => `
+          <div class="benefit-item">
+            <div class="ic">${b.icon}</div>
+            <div class="text"><b data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(b.title)}</b><br><span data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(b.text)}</span></div>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="benefits-list">${items}</div>`;
+      }
+      else if (t === 'phones') {
+        const items = block.items.map((p, idx) => `
+          <div style="margin-bottom:14px">
+            <div style="font-size:13px; color:var(--c-text-soft); margin-bottom:4px"><b data-edit-key="${bp}.items.${idx}.label">${ctxSubstitute(p.label)}</b></div>
+            <div class="phone-row">
+              <span class="num" data-edit-key="${bp}.items.${idx}.number" data-copy="${ctxSubstitute(p.number)}">${ctxSubstitute(p.number)}</span>
+              <button data-copy="${ctxSubstitute(p.number)}">Copiar</button>
+            </div>
+            <div style="font-size:12px; color:var(--c-text-mute); margin-top:4px" data-edit-key="${bp}.items.${idx}.hours">${ctxSubstitute(p.hours)}</div>
+          </div>`).join('');
+        wrap.innerHTML = `<div style="max-width:680px; margin:24px auto 0; background:#fff; border:1px solid var(--c-border); border-radius:var(--r-md); padding:24px">${items}</div>`;
+        setTimeout(() => {
+          wrap.querySelectorAll('[data-copy]').forEach(b => {
+            b.addEventListener('click', () => {
+              const v = b.dataset.copy;
+              navigator.clipboard?.writeText(v);
+              toast('Número copiado: ' + v);
+            });
+          });
+        }, 0);
+      }
+      else if (t === 'dark-card') {
+        const specs = block.specs.map((s, idx) => `
+          <div class="spec-item-dark">
+            <div class="ic">${s.icon}</div>
+            <div class="name" data-edit-key="${bp}.specs.${idx}.name">${ctxSubstitute(s.name)}</div>
+          </div>`).join('');
+        const quicks = block.quicks.map((q, idx) => `
+          <div class="quick">
+            <div class="ic">${q.icon}</div>
+            <div class="tx" data-edit-key="${bp}.quicks.${idx}.text">${q.text}</div>
+          </div>`).join('');
+        wrap.innerHTML = `
+          <div class="dark-card">
+            <svg class="shield" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            <div class="telemed-title">
+              <b><span data-edit-key="${bp}.title.main">${ctxSubstitute(block.title.main)}</span><span class="h" data-edit-key="${bp}.title.highlight">${ctxSubstitute(block.title.highlight || '')}</span></b>
+              ${block.title.sub ? `<div class="sub" data-edit-key="${bp}.title.sub">${ctxSubstitute(block.title.sub)}</div>` : ''}
+            </div>
+            <div class="specs-grid-dark">${specs}</div>
+            <div class="highlight-bar" data-edit-key="${bp}.highlight">${ctxSubstitute(block.highlight || '')}</div>
+            <div class="quick-grid">${quicks}</div>
+            ${block.footnote ? `<div class="footnote" data-edit-key="${bp}.footnote">${ctxSubstitute(block.footnote)}</div>` : ''}
+          </div>`;
+      }
+      else if (t === 'split') {
+        // Lado esquerdo: lista de benefícios com ícones circulares
+        // Lado direito: card escuro com 12 especialidades
+        const leftItems = block.left.items.map(b => `
+          <div class="benefit-item">
+            <div class="ic">${b.icon}</div>
+            <div class="text">${b.text}</div>
+          </div>`).join('');
+        const rightSpecs = block.right.specs.map(s => `
+          <div class="spec-item-dark">
+            <div class="ic">${s.icon}</div>
+            <div class="name">${ctxSubstitute(s.name)}</div>
+          </div>`).join('');
+        const rightQuicks = block.right.quicks.map(q => `
+          <div class="quick">
+            <div class="ic">${q.icon}</div>
+            <div class="tx">${q.text}</div>
+          </div>`).join('');
+        wrap.innerHTML = `
+          <div class="split">
+            <div>
+              ${block.left.title ? `<h3 style="font-family:var(--ff-serif); font-size:24px; margin-bottom:18px; color:var(--c-primary)">${ctxSubstitute(block.left.title)}</h3>` : ''}
+              <div class="benefits-list">${leftItems}</div>
+            </div>
+            <div class="dark-card">
+              <svg class="shield" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              <div class="peace">${ctxSubstitute(block.right.peace || '')}</div>
+              <div class="telemed-title">
+                <b>${ctxSubstitute(block.right.title.main)}<span class="h">${ctxSubstitute(block.right.title.highlight || '')}</span></b>
+                ${block.right.title.sub ? `<div class="sub">${ctxSubstitute(block.right.title.sub)}</div>` : ''}
+              </div>
+              <div class="specs-grid-dark">${rightSpecs}</div>
+              <div class="highlight-bar">${ctxSubstitute(block.right.highlight || '')}</div>
+              <div class="quick-grid">${rightQuicks}</div>
+              ${block.right.footnote ? `<div class="footnote">${ctxSubstitute(block.right.footnote)}</div>` : ''}
+            </div>
+          </div>`;
+      }
+      else if (t === 'portoseg-strip') {
+        wrap.innerHTML = `
+          <div class="portoseg-strip" style="margin: 40px -100vw 0; padding-left: 100vw; padding-right: 100vw;">
+            <div class="container portoseg-strip-inner">
+              <span class="lbl" data-edit-key="${bp}.leftLabel">${ctxSubstitute(block.leftLabel)}</span>
+              <div class="ps-logo">
+                <div class="ps-mark">PS</div>
+                <div class="ps-text" data-edit-key="${bp}.brandName">${ctxSubstitute(block.brandName)}<small data-edit-key="${bp}.brandSub">${ctxSubstitute(block.brandSub || '')}</small></div>
+              </div>
+            </div>
+          </div>`;
+      }
+      else if (t === 'values') {
+        const items = block.items.map((v, idx) => `
+          <div class="value-card">
+            <div class="ic">${v.icon}</div>
+            <h4 data-edit-key="${bp}.items.${idx}.title">${ctxSubstitute(v.title)}</h4>
+            <p data-edit-key="${bp}.items.${idx}.text">${ctxSubstitute(v.text)}</p>
+          </div>`).join('');
+        wrap.innerHTML = `<div class="values-grid">${items}</div>`;
+      }
+      return wrap;
+    }
+
+    // Render de cada módulo
+    // Estado global de índices para o modo edição
+    let _editModuleIdx = 0;
+    let _editBlockIdx = 0;
+
+    function renderModule(mod, moduleIdx) {
+      const sec = document.createElement('section');
+      sec.className = 'module';
+      sec.id = `modulo-${mod.id}`;
+      sec.setAttribute('data-tag', mod.tag);
+      const tagSafe = ctxSubstitute(mod.tag);
+      const titleSafe = ctxSubstitute(mod.title);
+      const introSafe = ctxSubstitute(mod.intro);
+      sec.innerHTML = `
+        <div class="container">
+          <header class="module-head reveal">
+            <div class="module-tag"><span class="num">${String(mod.id).padStart(2,'0')}</span> <span data-edit-key="modules.${moduleIdx}.tag">${tagSafe}</span></div>
+            <h2 data-edit-key="modules.${moduleIdx}.title">${titleSafe}</h2>
+            <p data-edit-key="modules.${moduleIdx}.intro">${introSafe}</p>
+          </header>
+          <div class="module-body"></div>
+        </div>`;
+      const body = sec.querySelector('.module-body');
+      mod.blocks.forEach((b, bi) => {
+        _editBlockIdx = bi;
+        body.appendChild(renderBlock(b, moduleIdx, bi));
+      });
+      return sec;
+    }
+
+    // Boot
+    function boot() {
+      // Marca a página como JS-enabled para o reveal funcionar
+      document.documentElement.classList.add('js');
+      // Tira snapshot do CONFIG original ANTES de qualquer edição
+      snapshotConfig();
+      // Aplica edições guardadas ANTES de renderizar os módulos
+      applyStoredEdits();
+      applyIdentity();
+      CONFIG.modules.forEach((m, mi) => root.appendChild(renderModule(m, mi)));
+      setupReveal();
+      setupProgress();
+      setupNavHighlight();
+    }
+
+    // Reveal on scroll (com fallback: se IO não existir ou a página for pré-renderizada, mostra tudo)
+    function setupReveal() {
+      const els = $$('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(el => io.observe(el));
+      // Safety: se algo nunca entrar na viewport em 1.5s, mostra tudo
+      setTimeout(() => els.forEach(el => el.classList.add('in')), 1500);
+    }
+
+    // Progress bar + pill
+    function setupProgress() {
+      const bar = $('#progressBar');
+      const txt = $('#progressText');
+      const pillTxt = $('#sectionPillText');
+      const prevBtn = $('#fnavPrev');
+      const nextBtn = $('#fnavNext');
+      const label = $('#fnavLabel');
+      const sections = CONFIG.modules.map(m => $('#modulo-' + m.id));
+      const total = sections.length;
+      let currentIdx = 0;
+      let hoverTimeout = null;
+
+      const gotoSection = (idx) => {
+        if (idx < 0 || idx >= sections.length) return;
+        currentIdx = idx;
+        const target = sections[idx];
+        if (target) {
+          // Scroll suave, considerando o topbar sticky (68px)
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      };
+
+      const showLabel = (idx, dir) => {
+        if (idx < 0 || idx >= sections.length) return;
+        const m = CONFIG.modules[idx];
+        if (!m || !label) return;
+        const arrow = dir === 'up' ? '↑' : '↓';
+        label.textContent = `${arrow} ${String(idx + 1).padStart(2, '0')} · ${m.tag || m.title}`;
+        label.classList.add('show');
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => label.classList.remove('show'), 1400);
+      };
+
+      const update = () => {
+        const scrollY = window.scrollY + window.innerHeight * 0.4;
+        let cur = 0;
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i] && sections[i].offsetTop <= scrollY) cur = i + 1;
+        }
+        currentIdx = Math.max(0, cur - 1);
+        // Progresso real: 0% no topo, 100% ao chegar no último módulo
+        const pct = Math.min(100, Math.round((cur / total) * 100));
+        bar.style.width = pct + '%';
+        txt.textContent = pct + '% concluído';
+        // Pill: sempre mostra "Módulo X de Y" — no topo (antes do 1) exibe "Módulo 1 de Y"
+        if (pillTxt) pillTxt.textContent = `Módulo ${Math.max(1, cur)} de ${total}`;
+        // Habilita/desabilita botões
+        if (prevBtn) prevBtn.disabled = currentIdx <= 0;
+        if (nextBtn) nextBtn.disabled = currentIdx >= total - 1;
+      };
+
+      // Click handlers
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          gotoSection(currentIdx - 1);
+          showLabel(currentIdx - 1, 'up');
+        });
+        // Hover: mostra label da seção anterior
+        prevBtn.addEventListener('mouseenter', () => showLabel(currentIdx - 1, 'up'));
+        prevBtn.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimeout);
+          setTimeout(() => label.classList.remove('show'), 300);
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          gotoSection(currentIdx + 1);
+          showLabel(currentIdx + 1, 'down');
+        });
+        nextBtn.addEventListener('mouseenter', () => showLabel(currentIdx + 1, 'down'));
+        nextBtn.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimeout);
+          setTimeout(() => label.classList.remove('show'), 300);
+        });
+      }
+
+      // Atalhos de teclado: ↑/↓ ou PageUp/PageDown
+      document.addEventListener('keydown', (e) => {
+        if (e.target.matches('input, textarea')) return;
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+          if (currentIdx < total - 1) { e.preventDefault(); gotoSection(currentIdx + 1); }
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          if (currentIdx > 0) { e.preventDefault(); gotoSection(currentIdx - 1); }
+        } else if (e.key === 'Home') {
+          e.preventDefault(); gotoSection(0);
+        } else if (e.key === 'End') {
+          e.preventDefault(); gotoSection(total - 1);
+        }
+      });
+
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // Nav active state (visual only)
+    function setupNavHighlight() {
+      // implementada em setupProgress
+    }
+
+    /* =====================================================================
+       MODO EDIÇÃO — Editor inline com lápis ✏️
+       - Ativa pelo botão "Editar" no topbar
+       - Mostra lápis em todos os [data-edit-key] e [data-edit-image]
+       - Clique no lápis → campo fica contenteditable
+       - Salvar → persiste no localStorage
+       - Exportar HTML → baixa index.html com o CONFIG atualizado
+       ===================================================================== */
+    const EDIT_KEY = 'gaspar_config_edits_v1';
+
+    // Get/set valor em CONFIG por path (ex: "modules.3.title")
+    function getPath(obj, path) {
+      return path.split('.').reduce((o, k) => {
+        if (o == null) return undefined;
+        if (/^\d+$/.test(k)) return o[parseInt(k, 10)];
+        return o[k];
+      }, obj);
+    }
+    function setPath(obj, path, value) {
+      const parts = path.split('.');
+      let cur = obj;
+      for (let i = 0; i < parts.length - 1; i++) {
+        const k = parts[i];
+        const nextKey = parts[i + 1];
+        const nextIsIdx = /^\d+$/.test(nextKey);
+        const idx = parseInt(k, 10);
+        if (/^\d+$/.test(k)) {
+          // Estamos descendo num índice de array
+          if (cur[idx] == null || typeof cur[idx] !== 'object') {
+            cur[idx] = nextIsIdx ? [] : {};
+          }
+          cur = cur[idx];
+        } else {
+          // Estamos descendo numa chave de objeto
+          if (cur[k] == null || typeof cur[k] !== 'object') {
+            cur[k] = nextIsIdx ? [] : {};
+          }
+          cur = cur[k];
+        }
+      }
+      const last = parts[parts.length - 1];
+      if (/^\d+$/.test(last)) cur[parseInt(last, 10)] = value;
+      else cur[last] = value;
+    }
+
+    // Serializa CONFIG de volta para código JS
+    function serializeConfig(obj, indent = 6) {
+      const pad = ' '.repeat(indent);
+      if (obj === null) return 'null';
+      if (obj === undefined) return 'undefined';
+      if (typeof obj === 'string') return JSON.stringify(obj);
+      if (typeof obj === 'number' || typeof obj === 'boolean') return String(obj);
+      if (Array.isArray(obj)) {
+        if (obj.length === 0) return '[]';
+        const items = obj.map(v => pad + '  ' + serializeConfig(v, indent + 2));
+        return '[\n' + items.join(',\n') + '\n' + pad + ']';
+      }
+      if (typeof obj === 'object') {
+        const keys = Object.keys(obj);
+        if (keys.length === 0) return '{}';
+        const items = keys.map(k => pad + '  ' + JSON.stringify(k) + ': ' + serializeConfig(obj[k], indent + 2));
+        return '{\n' + items.join(',\n') + '\n' + pad + '}';
+      }
+      return 'null';
+    }
+
+    // Toast helper
+    function editToast(msg, type = 'ok') {
+      const el = $('#editToast');
+      if (!el) return;
+      el.textContent = msg;
+      el.style.background = type === 'err' ? '#EF4444' : (type === 'warn' ? '#F59E0B' : '#10B981');
+      el.classList.add('show');
+      clearTimeout(editToast._t);
+      editToast._t = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    // Aplica edições guardadas no localStorage no CONFIG (em memória) e re-renderiza
+    function applyStoredEdits() {
+      const stored = localStorage.getItem(EDIT_KEY);
+      if (!stored) return;
+      try {
+        const edits = JSON.parse(stored);
+        for (const [path, value] of Object.entries(edits)) {
+          if (path.endsWith('.logo') || path.endsWith('.banner')) continue; // imagens vão via base64 separado
+          if (path === '__images__') continue;
+          setPath(CONFIG, path, value);
+        }
+        // Imagens guardadas em __images__
+        if (edits.__images__) {
+          for (const [key, dataUrl] of Object.entries(edits.__images__)) {
+            if (key === 'company.logo' && $('#brandMark img')) {
+              $('#brandMark img').src = dataUrl;
+              $('#brandMark').innerHTML = `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover" />`;
+            }
+            if (key === 'hero.banner' && $('.hero-banner-img img')) {
+              $('.hero-banner-img img').src = dataUrl;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Falha ao aplicar edições:', e);
+      }
+    }
+
+    // Snapshot do CONFIG original (para detectar mudanças)
+    let _configBaseline = null;
+    function snapshotConfig() {
+      _configBaseline = JSON.parse(JSON.stringify(CONFIG));
+    }
+    function diffConfig() {
+      const edits = {};
+      const images = {};
+      const seen = new Set();
+      // Para cada elemento editável, compara o valor atual (no DOM) com o original
+      $$('[data-edit-key]').forEach(el => {
+        const key = el.dataset.editKey;
+        if (seen.has(key)) return; // pula duplicatas (mantém o primeiro)
+        seen.add(key);
+        const newVal = el.textContent.trim();
+        const orig = getPath(_configBaseline || CONFIG, key);
+        // Atualiza CONFIG em memória
+        setPath(CONFIG, key, newVal);
+        // Salva apenas se o valor no DOM difere do baseline original
+        if (newVal !== orig) edits[key] = newVal;
+      });
+      // Salva imagens separadamente
+      const logoImg = $('#brandMark img');
+      if (logoImg && logoImg.src && logoImg.src.startsWith('data:')) {
+        images['company.logo'] = logoImg.src;
+      }
+      const bannerImg = $('.hero-banner-img img');
+      if (bannerImg && bannerImg.src && bannerImg.src.startsWith('data:')) {
+        images['hero.banner'] = bannerImg.src;
+      }
+      if (Object.keys(images).length) edits.__images__ = images;
+      return edits;
+    }
+    // Mantém compatibilidade: collectEdits = diffConfig
+    function collectEdits() { return diffConfig(); }
+
+    // === Edit mode setup ===
+    function setupEditMode() {
+      const toggle = $('#editToggle');
+      const toolbar = $('#editToolbar');
+      const toggleLabel = $('#editToggleLabel');
+      if (!toggle || !toolbar) return;
+
+      // Aplicar edições salvas no boot
+      applyStoredEdits();
+
+      // Toggle
+      toggle.addEventListener('click', () => {
+        const on = !document.body.classList.contains('edit-mode');
+        document.body.classList.toggle('edit-mode', on);
+        toolbar.classList.toggle('show', on);
+        toggle.classList.toggle('active', on);
+        toggleLabel.textContent = on ? 'Sair' : 'Editar';
+        if (on) editToast('Modo edição ativado — clique nos ✏️ para editar');
+      });
+
+      // Helper: entrar/sair de edição ao clicar no lápis (::before)
+      document.addEventListener('click', (e) => {
+        if (!document.body.classList.contains('edit-mode')) return;
+        const target = e.target;
+        // Detecta se clicou num elemento com data-edit-key (o ::before pencil é parte do elemento)
+        const editable = target.closest('[data-edit-key], [data-edit-image]');
+        if (!editable) return;
+        // Se for imagem, abre file picker
+        if (editable.hasAttribute('data-edit-image')) {
+          e.preventDefault();
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = (ev) => {
+            const file = ev.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (re) => {
+              const dataUrl = re.target.result;
+              const key = editable.dataset.editImage;
+              if (key === 'company.logo') {
+                editable.innerHTML = `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover" />`;
+              } else if (key === 'hero.banner') {
+                const img = editable.querySelector('img');
+                if (img) img.src = dataUrl;
+                else editable.innerHTML = `<img src="${dataUrl}" />`;
+              }
+              editToast('🖼️ Imagem atualizada (clique Salvar ou Exportar)');
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+          return;
+        }
+        // Texto: foca e ativa contenteditable
+        e.preventDefault();
+        if (editable.getAttribute('contenteditable') === 'true') return;
+        editable.setAttribute('contenteditable', 'true');
+        editable.focus();
+        // Posiciona cursor no fim
+        const range = document.createRange();
+        range.selectNodeContents(editable);
+        range.collapse(false);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+
+      // Salva ao perder foco
+      document.addEventListener('blur', (e) => {
+        const el = e.target.closest && e.target.closest('[data-edit-key][contenteditable="true"]');
+        if (!el) return;
+        el.removeAttribute('contenteditable');
+        const key = el.dataset.editKey;
+        setPath(CONFIG, key, el.textContent.trim());
+      }, true);
+
+      // Esc cancela edição
+      document.addEventListener('keydown', (e) => {
+        if (!document.body.classList.contains('edit-mode')) return;
+        const el = e.target.closest && e.target.closest('[data-edit-key][contenteditable="true"]');
+        if (!el) return;
+        if (e.key === 'Escape') {
+          el.removeAttribute('contenteditable');
+          el.blur();
+        }
+      });
+
+      // Salvar
+      $('#editSave').addEventListener('click', () => {
+        const edits = collectEdits();
+        try {
+          localStorage.setItem(EDIT_KEY, JSON.stringify(edits));
+          editToast(`💾 Salvo! ${Object.keys(edits).filter(k => k !== '__images__').length} campos + ${edits.__images__ ? Object.keys(edits.__images__).length : 0} imagens`);
+        } catch (e) {
+          editToast('❌ Erro ao salvar (localStorage cheio?)', 'err');
+        }
+      });
+
+      // Exportar HTML
+      $('#editExport').addEventListener('click', () => {
+        // Primeiro coleta todas as edições
+        const edits = collectEdits();
+        // Serializa CONFIG atualizado
+        const newConfigStr = '    const CONFIG = ' + serializeConfig(CONFIG) + ';\n';
+        // Pega o HTML atual e substitui o bloco CONFIG
+        // Para isso, vamos ao fetch da página original? Não — vamos serializar o DOM.
+        // Estratégia: pegar o HTML original via fetch e substituir.
+        // Mas para funcionar offline, vamos serializar o document e fazer replace.
+        const docHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        // Remove a classe edit-mode e elementos do editor do export
+        const cleanHtml = docHtml
+          .replace(/<body class="edit-mode">/g, '<body>')
+          .replace(/ class="edit-mode"/g, '')
+          .replace(/<div class="edit-toolbar[^>]*>[\s\S]*?<\/div>\s*<div class="edit-toolbar[^>]*">[\s\S]*?<\/div>/g, '')
+          .replace(/<div class="edit-toolbar[^>]*>[\s\S]*?<\/div>/g, '')
+          .replace(/<div class="edit-toast[^>]*>[\s\S]*?<\/div>/g, '')
+          .replace(/<button class="edit-toggle[^"]*"[^>]*>[\s\S]*?<\/button>/g, '')
+          .replace(/ contenteditable="true"/g, '')
+          .replace(/ data-edit-key="[^"]*"/g, '')
+          .replace(/ data-edit-image="[^"]*"/g, '')
+          .replace(/ data-tag="[^"]*"/g, '');
+
+        // Substitui o CONFIG block
+        const configRegex = /const CONFIG = \{[\s\S]*?\n    \};/;
+        const finalHtml = cleanHtml.replace(configRegex, newConfigStr.trim());
+
+        // Download
+        const blob = new Blob([finalHtml], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'treinamento-editado.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Também salva no localStorage
+        try { localStorage.setItem(EDIT_KEY, JSON.stringify(edits)); } catch(e) {}
+
+        editToast('⬇️ HTML exportado! Substitua o index.html original por este.');
+      });
+
+      // Restaurar
+      $('#editReset').addEventListener('click', () => {
+        if (!confirm('Tem certeza? Isso vai apagar TODAS as edições e voltar ao original.')) return;
+        localStorage.removeItem(EDIT_KEY);
+        editToast('↩️ Restaurado! Recarregando...', 'warn');
+        setTimeout(() => location.reload(), 800);
+      });
+
+      // Sair
+      $('#editExit').addEventListener('click', () => {
+        document.body.classList.remove('edit-mode');
+        toolbar.classList.remove('show');
+        toggle.classList.remove('active');
+        toggleLabel.textContent = 'Editar';
+        // Remove contenteditable de qualquer campo
+        $$('[data-edit-key][contenteditable="true"]').forEach(el => el.removeAttribute('contenteditable'));
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', boot);
+    document.addEventListener('DOMContentLoaded', setupEditMode);
+  </script>
+</body>
+</html>
