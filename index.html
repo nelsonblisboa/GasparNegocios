@@ -1147,6 +1147,21 @@
 </head>
 <body>
 
+  <!-- Edit toolbar toggle in topbar -->
+  <button id="editToggle" class="edit-toggle" aria-pressed="false"><span id="editToggleLabel">Editar</span></button>
+
+  <!-- Floating edit toolbar (hidden until activated) -->
+  <div class="edit-toolbar" id="editToolbar" aria-hidden="true">
+    <button id="editSave" title="Salvar (local)">💾 Salvar</button>
+    <div class="divider" aria-hidden="true"></div>
+    <button id="editExport" class="primary" title="Exportar HTML">⬇️ Exportar</button>
+    <button id="editReset" title="Restaurar">↩️ Restaurar</button>
+    <div class="divider" aria-hidden="true"></div>
+    <button id="editExit" title="Sair do modo edição">Sair</button>
+  </div>
+
+  <div class="edit-toast" id="editToast" aria-live="polite" role="status" style="display:none"></div>
+
   <!-- Progress bar -->
   <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
 
