@@ -1023,9 +1023,26 @@
       /* CTAs fullwidth em mobile */
       .hero-g-cta .btn-gold, .hero-g-cta .btn-outline-gold { flex: 1 1 100%; justify-content: center; }
     }
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       .stat-cell b { font-size: 28px; }
-      .hero-banner-cta h1 { font-size: 1.4rem; }
+      .hero-banner-cta h1 { font-size: 1.45rem; }
+      .hero-banner-img img { max-height: 260px; }
+      .hero-banner-cta .lead { font-size: 15px; }
+
+      /* Slightly smaller floating controls on narrow phones */
+      .fnav-btn { width: 40px; height: 40px; }
+      .floating-nav { right: 10px; }
+      .section-pill { top: 66px; right: 10px; font-size: 10px; padding: 4px 8px; }
+    }
+
+    @media (max-width: 360px) {
+      .stat-cell b { font-size: 26px; }
+      .hero-banner-cta h1 { font-size: 1.2rem; }
+      .hero-banner-img img { max-height: 200px; }
+      .hero-banner-cta .lead { font-size: 14px; }
+      .section-pill { top: 60px; right: 8px; font-size: 10px; padding: 3px 7px; }
+      .fnav-btn { width: 38px; height: 38px; }
+      .topbar-inner { height: 60px; }
     }
 
     /* ===========================================================
