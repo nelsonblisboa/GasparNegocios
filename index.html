@@ -2085,12 +2085,33 @@
         </div>
         <div>
           <h3>Treinamento</h3>
-          <a href="#modulo-1">1. Abertura</a>
-          <a href="#modulo-2">2. Conexão Emocional</a>
-          <a href="#modulo-3">3. Coberturas</a>
-          <a href="#modulo-7">7. Script</a>
-          <a href="#modulo-9">9. Glossário</a>
-          <a href="#modulo-10">10. Exercícios</a>
+          <div class="footer-modules-grid">
+            <div>
+              <a href="#modulo-1">1. Abertura</a>
+              <a href="#modulo-2">2. Conexão Emocional</a>
+              <a href="#modulo-3">3. Coberturas</a>
+              <a href="#modulo-4">4. Benefícios em Vida</a>
+              <a href="#modulo-5">5. Gatilhos de Venda</a>
+              <a href="#modulo-6">6. Argumento-Chave</a>
+              <a href="#modulo-7">7. Script de Fechamento</a>
+              <a href="#modulo-8">8. Quebrando Objeções</a>
+              <a href="#modulo-9">9. Glossário</a>
+              <a href="#modulo-10">10. Exercícios Práticos</a>
+              <a href="#modulo-11">11. Materiais &amp; Telefones</a>
+            </div>
+            <div>
+              <a href="#modulo-12">12. Serviço de Telemedicina</a>
+              <a href="#modulo-13">13. Como Funciona</a>
+              <a href="#modulo-14">14. Por Que Escolher</a>
+              <a href="#modulo-15">15. Para Quem É Indicado</a>
+              <a href="#modulo-16">16. Dúvidas Comuns</a>
+              <a href="#modulo-17">17. Contatos</a>
+              <a href="#modulo-18">18. Visão Geral</a>
+              <a href="#modulo-19">19. Telemedicina</a>
+              <a href="#modulo-20">20. Seguradora</a>
+              <a href="#modulo-21">21. Nossos Valores</a>
+            </div>
+          </div>
         </div>
         <div>
           <h3>Contato</h3>
@@ -2098,6 +2119,13 @@
           <p id="footerEmail">✉️ <span id="footerEmailAddr">contato@corretorahorizon.com.br</span></p>
         </div>
       </div>
+      <style>
+        .footer-modules-grid { display:flex; gap:18px; align-items:flex-start; }
+        .footer-modules-grid > div { display:flex; flex-direction:column; gap:6px; }
+        .footer-modules-grid a { color: inherit; text-decoration: none; font-size:14px; }
+        .footer-modules-grid a:hover { text-decoration: underline; color: var(--c-accent); }
+        @media (max-width: 800px) { .footer-modules-grid { flex-direction:column; gap:8px; } }
+      </style>
       <div class="footer-bottom">
         <div>© <span id="footerYear">2026</span> · <span id="footerCopy">GASPAR — Negócios JPA. Todos os direitos reservados.</span></div>
         <div class="warn">⚠️ Material de uso interno. Não exibir ao cliente final. Sempre consultar a apólice e as condições gerais vigentes do produto.</div>
