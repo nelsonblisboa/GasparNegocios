@@ -1024,35 +1024,38 @@
       .hero-g-cta .btn-gold, .hero-g-cta .btn-outline-gold { flex: 1 1 100%; justify-content: center; }
     }
     @media (max-width: 420px) {
-      .stat-cell b { font-size: 28px; }
+      .stat-cell b { font-size: 26px; }
 
-      /* Hero: use clamp to scale smoothly on small screens */
-      .hero-banner-cta h1 { font-size: clamp(1.1rem, 5vw, 1.6rem); line-height: 1.12; letter-spacing: -0.01em; }
-      .hero-g h1 { font-size: clamp(1.2rem, 5.5vw, 2rem); }
+      /* Hero: tighter clamp and slightly lighter weight for compact phones */
+      .hero-banner-cta h1 { font-size: clamp(1rem, 4.2vw, 1.5rem); line-height: 1.08; letter-spacing: -0.015em; font-weight: 600; }
+      .hero-g h1 { font-size: clamp(1.1rem, 4.5vw, 1.85rem); line-height: 1.08; font-weight: 600; }
 
-      /* Slightly lower hero image height to avoid pushing content */
-      .hero-banner-img img { max-height: 240px; }
+      /* Lower hero image height to avoid pushing content */
+      .hero-banner-img img { max-height: 220px; }
       .hero-banner-cta .lead { font-size: 15px; }
 
       /* Slightly smaller floating controls on narrow phones */
-      .fnav-btn { width: 40px; height: 40px; }
-      .floating-nav { right: 10px; }
-      .section-pill { top: 66px; right: 10px; font-size: 10px; padding: 4px 8px; }
+      .fnav-btn { width: 38px; height: 38px; }
+      .floating-nav { right: 8px; }
+      .section-pill { top: 64px; right: 8px; font-size: 10px; padding: 3px 8px; }
 
       /* Module headings slightly smaller for very narrow screens */
-      .module-head h2 { font-size: 1.45rem; }
+      .module-head h2 { font-size: 1.4rem; }
+
+      /* Reduce hero vertical padding to bring content into view */
+      .hero-banner { padding-bottom: 24px; }
     }
 
     @media (max-width: 360px) {
-      .stat-cell b { font-size: 26px; }
-      .hero-banner-cta h1 { font-size: clamp(1rem, 6vw, 1.4rem); }
-      .hero-g h1 { font-size: clamp(1.1rem, 6.5vw, 1.8rem); }
-      .hero-banner-img img { max-height: 180px; }
-      .hero-banner-cta .lead { font-size: 14px; }
-      .section-pill { top: 60px; right: 8px; font-size: 10px; padding: 3px 7px; }
-      .fnav-btn { width: 38px; height: 38px; }
-      .topbar-inner { height: 60px; }
-      .module-head h2 { font-size: 1.3rem; }
+      .stat-cell b { font-size: 24px; }
+      .hero-banner-cta h1 { font-size: clamp(0.95rem, 5vw, 1.2rem); line-height: 1.06; font-weight: 600; }
+      .hero-g h1 { font-size: clamp(1rem, 5.5vw, 1.6rem); font-weight: 600; }
+      .hero-banner-img img { max-height: 160px; }
+      .hero-banner-cta .lead { font-size: 13px; }
+      .section-pill { top: 58px; right: 7px; font-size: 9px; padding: 3px 6px; }
+      .fnav-btn { width: 36px; height: 36px; }
+      .topbar-inner { height: 56px; }
+      .module-head h2 { font-size: 1.2rem; }
     }
 
     /* ===========================================================
