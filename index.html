@@ -1025,24 +1025,34 @@
     }
     @media (max-width: 420px) {
       .stat-cell b { font-size: 28px; }
-      .hero-banner-cta h1 { font-size: 1.45rem; }
-      .hero-banner-img img { max-height: 260px; }
+
+      /* Hero: use clamp to scale smoothly on small screens */
+      .hero-banner-cta h1 { font-size: clamp(1.1rem, 5vw, 1.6rem); line-height: 1.12; letter-spacing: -0.01em; }
+      .hero-g h1 { font-size: clamp(1.2rem, 5.5vw, 2rem); }
+
+      /* Slightly lower hero image height to avoid pushing content */
+      .hero-banner-img img { max-height: 240px; }
       .hero-banner-cta .lead { font-size: 15px; }
 
       /* Slightly smaller floating controls on narrow phones */
       .fnav-btn { width: 40px; height: 40px; }
       .floating-nav { right: 10px; }
       .section-pill { top: 66px; right: 10px; font-size: 10px; padding: 4px 8px; }
+
+      /* Module headings slightly smaller for very narrow screens */
+      .module-head h2 { font-size: 1.45rem; }
     }
 
     @media (max-width: 360px) {
       .stat-cell b { font-size: 26px; }
-      .hero-banner-cta h1 { font-size: 1.2rem; }
-      .hero-banner-img img { max-height: 200px; }
+      .hero-banner-cta h1 { font-size: clamp(1rem, 6vw, 1.4rem); }
+      .hero-g h1 { font-size: clamp(1.1rem, 6.5vw, 1.8rem); }
+      .hero-banner-img img { max-height: 180px; }
       .hero-banner-cta .lead { font-size: 14px; }
       .section-pill { top: 60px; right: 8px; font-size: 10px; padding: 3px 7px; }
       .fnav-btn { width: 38px; height: 38px; }
       .topbar-inner { height: 60px; }
+      .module-head h2 { font-size: 1.3rem; }
     }
 
     /* ===========================================================
